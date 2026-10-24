@@ -309,13 +309,9 @@
     .btn.ghost{padding-left:12px;padding-right:12px}
   }
   [hidden]{display:none!important}
-  /* a banner mindig a képernyő alján van, filmnézés közben (lejátszó megnyitva) rejtve */
-  .adbanner{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;align-items:flex-end;pointer-events:none;padding-bottom:4px}
-  .adbanner>*{pointer-events:auto}
-  .overlay.open ~ .adbanner{display:none}
-  body:has(.overlay.open) .adbanner{display:none}
-  body{padding-bottom:72px}
-  @media(max-width:500px){.adbanner{transform:scale(.8);transform-origin:center bottom}}
+  /* a banner csak egy film vagy sorozat oldalán látszik (a lejátszó alatt), máshol rejtve */
+  .adbanner{display:none;justify-content:center;margin:26px auto 8px;position:relative;z-index:3;max-width:100%;overflow:hidden}
+  @media(max-width:500px){.adbanner{transform:scale(.8);transform-origin:center top;height:50px}}
 </style>
 </head>
 <body>
@@ -1191,6 +1187,23 @@ init();
     loaded = true;
     var sc = document.createElement('script'); sc.setAttribute('data-cfasync', 'false'); sc.src = SRC; document.body.appendChild(sc);
   }, true);
+})();
+</script>
+<script>
+// a banner (egyetlen példány) oda költözik, ahol éppen film- vagy sorozatoldal van nyitva
+(function () {
+  var ad = document.querySelector('.adbanner'), ov = document.getElementById('overlay'), sb = document.getElementById('seriesBar');
+  if (!ad || !ov || !sb) return;
+  function sync() {
+    var target = ov.classList.contains('open') ? ov.querySelector('.ov-inner') : (sb.style.display !== 'none' ? document.querySelector('main') : null);
+    if (!target) { ad.style.display = 'none'; return; }
+    if (ad.parentNode !== target) target.appendChild(ad);
+    ad.style.display = 'flex';
+  }
+  var mo = new MutationObserver(sync);
+  mo.observe(ov, { attributes: true, attributeFilter: ['class'] });
+  mo.observe(sb, { attributes: true, attributeFilter: ['style'] });
+  sync();
 })();
 </script>
 </body>
