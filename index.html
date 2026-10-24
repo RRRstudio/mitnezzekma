@@ -1190,19 +1190,26 @@ init();
 })();
 </script>
 <script>
-// a banner (egyetlen példány) oda költözik, ahol éppen film- vagy sorozatoldal van nyitva
+// a banner (egyetlen példány) oda költözik, ahol éppen film- vagy sorozatoldal van nyitva,
+// a főoldalon pedig a kategória-sorok közé kerül (a 2. sor után)
 (function () {
-  var ad = document.querySelector('.adbanner'), ov = document.getElementById('overlay'), sb = document.getElementById('seriesBar');
-  if (!ad || !ov || !sb) return;
+  var ad = document.querySelector('.adbanner'), ov = document.getElementById('overlay'), sb = document.getElementById('seriesBar'), content = document.getElementById('content');
+  if (!ad || !ov || !sb || !content) return;
   function sync() {
-    var target = ov.classList.contains('open') ? ov.querySelector('.ov-inner') : (sb.style.display !== 'none' ? document.querySelector('main') : null);
-    if (!target) { ad.style.display = 'none'; return; }
-    if (ad.parentNode !== target) target.appendChild(ad);
+    var pageTarget = ov.classList.contains('open') ? ov.querySelector('.ov-inner') : (sb.style.display !== 'none' ? document.querySelector('main') : null);
+    if (pageTarget) {
+      if (ad.parentNode !== pageTarget || ad.nextElementSibling) pageTarget.appendChild(ad);
+      ad.style.display = 'flex'; return;
+    }
+    var rows = content.querySelectorAll('.catrow');
+    if (rows.length < 2) { ad.style.display = 'none'; return; }
+    if (ad.previousElementSibling !== rows[1]) rows[1].after(ad);
     ad.style.display = 'flex';
   }
   var mo = new MutationObserver(sync);
   mo.observe(ov, { attributes: true, attributeFilter: ['class'] });
   mo.observe(sb, { attributes: true, attributeFilter: ['style'] });
+  mo.observe(content, { childList: true, subtree: true });
   sync();
 })();
 </script>
