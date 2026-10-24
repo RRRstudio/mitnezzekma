@@ -310,8 +310,11 @@
   }
   [hidden]{display:none!important}
   /* a banner csak egy film vagy sorozat oldalán látszik (a lejátszó alatt), máshol rejtve */
-  .adbanner{display:none;justify-content:center;margin:26px auto 8px;position:relative;z-index:3;max-width:100%;overflow:hidden}
+  .adbanner{justify-content:center;margin:26px auto 8px;position:relative;z-index:3;max-width:100%;overflow:hidden}
   @media(max-width:500px){.adbanner{transform:scale(.8);transform-origin:center top;height:50px}}
+  /* hibajelzés */
+  #badBtn.sent{opacity:.65;pointer-events:none}
+  .src.bad{color:#ff8a8a;border-color:rgba(255,90,90,.5);background:rgba(255,60,60,.12)}
   /* adblock-jelző: kicsi, a sarokban */
   #abNote{position:fixed;left:12px;bottom:12px;z-index:45;max-width:230px;padding:10px 30px 10px 12px;border-radius:12px;background:var(--accent);color:#12081f;
     font-family:var(--display);font-size:14px;letter-spacing:.6px;line-height:1.25;box-shadow:3px 3px 0 var(--accent2),0 8px 24px rgba(0,0,0,.5);display:none}
@@ -395,6 +398,7 @@
       <h2 id="nowTitle"></h2>
       <span class="viewsbig" id="nowViews"></span>
       <a id="nowLink" href="#" target="_blank" rel="noopener">Megnyitás új lapon ↗</a>
+      <button class="btn ghost" id="badBtn" type="button">⚠ Film nem jó</button>
       <button class="btn ghost dice" id="randBtn2" title="Másik véletlen film (R)">🎲 Másik random</button>
     </div>
     <div class="player" id="player"></div>
@@ -799,6 +803,7 @@ function makeCard(o) {
   const s = document.createElement('div'); s.className = 'src'; s.textContent = o.sub;
   const tags = document.createElement('div'); tags.className = 'tags'; tags.appendChild(s);
   if (o.id) { const v = document.createElement('span'); v.className = 'src views'; v.dataset.id = o.id; v.textContent = '👁 –'; tags.appendChild(v); watchViews(v); }
+  if (editable() && o.id) { const bd = document.createElement('span'); bd.className = 'src bad'; bd.hidden = true; tags.appendChild(bd); badBadge(bd, o.id); }
   info.append(t, tags);
   card.append(pic, info);
   if (editable() && o.id) {
@@ -993,6 +998,7 @@ function openPlayer(id) {
     if (playing === id) $('#nowViews').textContent = '👁 ' + fmtViews(v) + ' megtekintés';
     document.querySelectorAll('.views[data-id="' + id + '"]').forEach(e => { e.textContent = '👁 ' + fmtViews(v); });
   }).catch(() => {});
+  setupBadBtn(id);
   $('#hint').style.display = it.type === 'iframe' ? 'block' : 'none';
   const amb = $('#ambient'); amb.style.backgroundImage = it.thumb ? 'url(' + it.thumb + ')' : ''; amb.classList.toggle('nothumb', !it.thumb);
   // sorozat: előző / következő rész
@@ -1118,6 +1124,36 @@ $('#url').addEventListener('paste', e => {
   }
 });
 
+// ---- hibás link jelzése ("Film nem jó"): névtelen számláló filmenként ----
+// a kulcs a film azonosítóját és a linkjét is tartalmazza, ezért a link kicserélése után a jelzések nulláról indulnak
+const badNs = () => ('zs-hibas.' + location.hostname).toLowerCase().replace(/[^a-z0-9._-]/g, '-');
+const hashStr = t => { let h = 5381; for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
+const badKey = id => { const it = items.find(i => i.id === id); return viewKey(id) + '-' + hashStr((it && (it.url || it.src)) || ''); };
+async function badReq(kind, id) {
+  const r = await fetch(VIEW_API + '/' + kind + '/' + badNs() + '/' + badKey(id));
+  if (r.status === 404) return 0;
+  if (!r.ok) throw new Error('számláló: ' + r.status);
+  return Number((await r.json()).value) || 0;
+}
+const badSent = () => { try { return JSON.parse(localStorage.getItem('zs-bad') || '[]'); } catch (e) { return []; } };
+function badBadge(el, id) {
+  if (!editable()) return;
+  limited(() => badReq('get', id)).then(n => { if (n > 0) { el.textContent = '⚠ ' + n + ' jelzés'; el.hidden = false; } }).catch(() => {});
+}
+function setupBadBtn(id) {
+  const b = $('#badBtn'); if (!b) return;
+  const key = badKey(id), done = badSent().includes(key);
+  b.classList.toggle('sent', done); b.textContent = done ? '✔ Jelezve' : '⚠ Film nem jó';
+  b.onclick = async () => {
+    if (badSent().includes(key)) return;
+    b.classList.add('sent'); b.textContent = '✔ Jelezve';
+    try { const l = badSent(); l.push(key); localStorage.setItem('zs-bad', JSON.stringify(l.slice(-300))); } catch (e) {}
+    try { await badReq('hit', id); toast('Köszi, jeleztük, hogy a film nem jó 🙏'); }
+    catch (e) { b.classList.remove('sent'); b.textContent = '⚠ Film nem jó'; try { localStorage.setItem('zs-bad', JSON.stringify(badSent().filter(k => k !== key))); } catch (x) {} toast('Nem sikerült elküldeni, próbáld újra'); }
+  };
+  if (editable()) badReq('get', id).then(n => { if (n > 0 && playing === id) b.textContent = (done ? '✔ Jelezve' : '⚠ Film nem jó') + ' (' + n + ')'; }).catch(() => {});
+}
+
 // ---- különböző eszközök száma (név és IP nélkül, csak egy számláló) ----
 const devNs = () => ('zs-eszkozok.' + location.hostname).toLowerCase().replace(/[^a-z0-9._-]/g, '-');
 async function devReq(kind) {
@@ -1163,19 +1199,6 @@ async function init() {
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !busy) loadItems().then(() => { render(); onHash(); }).catch(() => {}); });
 init();
 </script>
-<!-- reklám (Adsterra banner 468x60) -->
-<div class="adbanner">
-<script>
-  atOptions = {
-    'key' : '448163fe12e844f41cf2d452cacf64c7',
-    'format' : 'iframe',
-    'height' : 60,
-    'width' : 468,
-    'params' : {}
-  };
-</script>
-<script src="https://bancadeltempoidea.org/22/448163fe12e844f41cf2d452cacf64c7"></script>
-</div>
 <!-- reklám (Adsterra/felugró): nem tölt be a kereső, a fejléc és az ablakok kattintásainál, és eszközönként legfeljebb 5 percenként egyszer -->
 <script>
 (function () {
@@ -1195,21 +1218,42 @@ init();
 })();
 </script>
 <script>
-// a banner (egyetlen példány) oda költözik, ahol éppen film- vagy sorozatoldal van nyitva,
-// a főoldalon pedig a kategória-sorok közé kerül (a 2. sor után)
+// reklám-bannerek (Adsterra 468x60): mindegyik külön keretben fut, így több is lehet egy oldalon.
+// Főoldalon 2–4 db kerül a kategória-sorok közé, film- és sorozatoldalon 1 db a tartalom alá.
 (function () {
-  var ad = document.querySelector('.adbanner'), ov = document.getElementById('overlay'), sb = document.getElementById('seriesBar'), content = document.getElementById('content');
-  if (!ad || !ov || !sb || !content) return;
+  var KEY = '448163fe12e844f41cf2d452cacf64c7', pool = [];
+  var ov = document.getElementById('overlay'), sb = document.getElementById('seriesBar'), content = document.getElementById('content');
+  if (!ov || !sb || !content) return;
+  function make() {
+    var d = document.createElement('div'); d.className = 'adbanner'; d.style.display = 'flex';
+    var f = document.createElement('iframe');
+    f.width = 468; f.height = 60; f.setAttribute('scrolling', 'no'); f.setAttribute('frameborder', '0'); f.style.cssText = 'border:0;max-width:100%';
+    var close = '</' + 'script>';
+    f.srcdoc = '<!doctype html><body style="margin:0;background:transparent"><script>atOptions={"key":"' + KEY + '","format":"iframe","height":60,"width":468,"params":{}};' + close +
+      '<script src="https://bancadeltempoidea.org/22/' + KEY + '">' + close + '</body>';
+    d.appendChild(f); return d;
+  }
+  function get(i) { while (pool.length <= i) pool.push(make()); return pool[i]; }
+  function release(from) { for (var i = from; i < pool.length; i++) if (pool[i].parentNode) pool[i].remove(); }
   function sync() {
     var pageTarget = ov.classList.contains('open') ? ov.querySelector('.ov-inner') : (sb.style.display !== 'none' ? document.querySelector('main') : null);
     if (pageTarget) {
-      if (ad.parentNode !== pageTarget || ad.nextElementSibling) pageTarget.appendChild(ad);
-      ad.style.display = 'flex'; return;
+      var one = get(0); if (one.parentNode !== pageTarget || one.nextElementSibling) pageTarget.appendChild(one);
+      release(1); return;
     }
-    var rows = content.querySelectorAll('.catrow');
-    if (rows.length < 2) { ad.style.display = 'none'; return; }
-    if (ad.previousElementSibling !== rows[1]) rows[1].after(ad);
-    ad.style.display = 'flex';
+    var rows = content.querySelectorAll('.catrow'), n = rows.length;
+    if (n < 1) { release(0); return; }
+    // hány banner: legalább 2, legfeljebb 4 (a sorok számától függően), egyenletesen elosztva
+    var want = Math.max(2, Math.min(4, Math.floor(n / 2)));
+    var idx = [];
+    for (var k = 1; k <= want; k++) { var i = Math.max(1, Math.ceil(k * n / (want + 1))); if (idx.indexOf(i) < 0) idx.push(i); }
+    if (idx.length < 2 && n >= 2) { var last = idx.indexOf(n) < 0 ? n : n - 1; if (idx.indexOf(last) < 0) idx.push(last); }
+    idx.sort(function (a, b) { return a - b; });
+    idx.forEach(function (rowNo, j) {
+      var b = get(j), anchor = rows[rowNo - 1];
+      if (b.previousElementSibling !== anchor) anchor.after(b);
+    });
+    release(idx.length);
   }
   var mo = new MutationObserver(sync);
   mo.observe(ov, { attributes: true, attributeFilter: ['class'] });
