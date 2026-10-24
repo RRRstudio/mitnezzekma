@@ -5,6 +5,7 @@
     "title": "A Mentalista – 1. évad 5. rész",
     "type": "vk",
     "src": "https://vk.com/video_ext.php?oid=-239235834&id=456242592&hd=2&autoplay=1",
+    "thumb": "https://image.tmdb.org/t/p/w500/yrmNt3AG0OX5eKUBvvlqeAMHnvp.jpg",
     "label": "VK",
     "series": "A Mentalista",
     "season": 1,
@@ -17,6 +18,7 @@
     "title": "A Mentalista – 1. évad 4. rész",
     "type": "iframe",
     "src": "https://vkvideo.ru/video_ext.php?oid=-239235834&id=456242591&hd=4",
+    "thumb": "https://image.tmdb.org/t/p/w500/yrmNt3AG0OX5eKUBvvlqeAMHnvp.jpg",
     "label": "vkvideo.ru",
     "series": "A Mentalista",
     "season": 1,
@@ -27,6 +29,7 @@
     "id": "mvmfgj94dv9",
     "url": "https://vkvideo.ru/video_ext.php?oid=-239235834&id=456242590&hd=4",
     "title": "A Mentalista – 1. évad 3. rész",
+    "thumb": "https://image.tmdb.org/t/p/w500/yrmNt3AG0OX5eKUBvvlqeAMHnvp.jpg",
     "type": "iframe",
     "src": "https://vkvideo.ru/video_ext.php?oid=-239235834&id=456242590&hd=4",
     "label": "vkvideo.ru",
@@ -41,6 +44,7 @@
     "title": "A Mentalista – 1. évad 2. rész",
     "type": "iframe",
     "src": "https://vkvideo.ru/video_ext.php?oid=-239235834&id=456242589&hd=4",
+    "thumb": "https://image.tmdb.org/t/p/w500/yrmNt3AG0OX5eKUBvvlqeAMHnvp.jpg",
     "label": "vkvideo.ru",
     "series": "A Mentalista",
     "season": 1,
@@ -53,6 +57,7 @@
     "title": "A Mentalista – 1. évad 1. rész",
     "type": "iframe",
     "src": "https://vkvideo.ru/video_ext.php?oid=-239235834&id=456242588&hd=4",
+    "thumb": "https://image.tmdb.org/t/p/w500/yrmNt3AG0OX5eKUBvvlqeAMHnvp.jpg",
     "label": "vkvideo.ru",
     "series": "A Mentalista",
     "season": 1,
@@ -66,6 +71,7 @@
     "type": "videa",
     "src": "https://videa.hu/player?v=36btHn12Fl6igmq7",
     "label": "Videa",
+    "thumb": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrAQftifpL1i3M9ykRJbkeemV63fZEd9Ltci33zKWUEw&s=10",
     "category": "Dráma"
   },
   {
@@ -73,6 +79,7 @@
     "url": "https://videa.hu/player?v=1s9OL7lbflXLptDy",
     "title": "A Keresztapa 2.",
     "type": "videa",
+    "thumb": "https://www.filmek1.hu/kepek/a-keresztapa-2-1974-45632/a-keresztapa-2-1974-kep-45632.jpg",
     "src": "https://videa.hu/player?v=1s9OL7lbflXLptDy",
     "label": "Videa",
     "category": "Dráma"
@@ -84,6 +91,7 @@
     "type": "videa",
     "src": "https://videa.hu/player?v=S3iOJeX23cmRE6aO",
     "label": "Videa",
+    "thumb": "https://hetediksor.hu/wp-content/uploads/2022/03/a-kereszapa-50.jpg",
     "category": "Dráma"
   },
   {
