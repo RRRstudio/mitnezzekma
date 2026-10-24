@@ -1175,5 +1175,23 @@ init();
 </script>
 <script src="https://bancadeltempoidea.org/22/448163fe12e844f41cf2d452cacf64c7"></script>
 </div>
+<!-- reklám (Adsterra/felugró): nem tölt be a kereső, a fejléc és az ablakok kattintásainál, és eszközönként legfeljebb 5 percenként egyszer -->
+<script>
+(function () {
+  var SRC = 'https://aarems.org/1/eec35253d864ddd60faf244cc7bdd7dc', KEY = 'zs-pop', GAP = 5 * 60 * 1000, loaded = false;
+  // a fejléc (kereső, gombok), a beállító ablakok és a hozzáadó panel kattintásait nem látja a reklámszkript
+  ['header', 'dialog', '#drawer'].forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el) { el.addEventListener('click', function (e) { e.stopPropagation(); }); });
+  });
+  document.addEventListener('click', function (e) {
+    if (loaded || !e.target.closest || !e.target.closest('.card, .hero, #heroBox')) return;
+    var last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (x) {}
+    if (Date.now() - last < GAP) return;
+    try { localStorage.setItem(KEY, String(Date.now())); } catch (x) {}
+    loaded = true;
+    var sc = document.createElement('script'); sc.setAttribute('data-cfasync', 'false'); sc.src = SRC; document.body.appendChild(sc);
+  }, true);
+})();
+</script>
 </body>
 </html>
