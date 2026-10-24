@@ -312,6 +312,11 @@
   /* a banner csak egy film vagy sorozat oldalán látszik (a lejátszó alatt), máshol rejtve */
   .adbanner{display:none;justify-content:center;margin:26px auto 8px;position:relative;z-index:3;max-width:100%;overflow:hidden}
   @media(max-width:500px){.adbanner{transform:scale(.8);transform-origin:center top;height:50px}}
+  /* adblock-jelző: kicsi, a sarokban */
+  #abNote{position:fixed;left:12px;bottom:12px;z-index:45;max-width:230px;padding:10px 30px 10px 12px;border-radius:12px;background:var(--accent);color:#12081f;
+    font-family:var(--display);font-size:14px;letter-spacing:.6px;line-height:1.25;box-shadow:3px 3px 0 var(--accent2),0 8px 24px rgba(0,0,0,.5);display:none}
+  #abNote.on{display:block}
+  #abNote button{position:absolute;right:4px;top:3px;border:0;background:none;color:#12081f;font-size:16px;line-height:1;cursor:pointer;padding:4px}
 </style>
 </head>
 <body>
@@ -1211,6 +1216,26 @@ init();
   mo.observe(sb, { attributes: true, attributeFilter: ['style'] });
   mo.observe(content, { childList: true, subtree: true });
   sync();
+})();
+</script>
+<div id="abNote" role="note">KÉRLEK KAPCSOLD KI AZ ADBLOCKERT, HOGY TÁMOGASD AZ OLDAL FENNMARADÁSÁT<button id="abClose" aria-label="Bezár">✕</button></div>
+<script>
+// adblock-észlelés: egy "csali" elem eltűnése, illetve a reklámszerver blokkolása alapján
+(function () {
+  var note = document.getElementById('abNote');
+  try { if (sessionStorage.getItem('zs-ab-closed')) return; } catch (e) {}
+  document.getElementById('abClose').onclick = function () { note.classList.remove('on'); try { sessionStorage.setItem('zs-ab-closed', '1'); } catch (e) {} };
+  function show() { try { if (JSON.parse(localStorage.getItem('mozi-cfg-v1') || '{}').token) return; } catch (e) {} note.classList.add('on'); }
+  var bait = document.createElement('div');
+  bait.className = 'adsbox ad-banner ads advert pub_300x250';
+  bait.style.cssText = 'position:absolute;left:-9999px;top:0;width:10px;height:10px';
+  document.body.appendChild(bait);
+  setTimeout(function () {
+    var cs = getComputedStyle(bait);
+    if (!bait.offsetHeight || cs.display === 'none' || cs.visibility === 'hidden') show();
+    bait.remove();
+  }, 600);
+  try { fetch('https://bancadeltempoidea.org/21/8c6d89939ec360819afa70a7d13d4ff4', { mode: 'no-cors', cache: 'no-store' }).catch(show); } catch (e) {}
 })();
 </script>
 </body>
