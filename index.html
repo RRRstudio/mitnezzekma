@@ -309,6 +309,7 @@
     .btn.ghost{padding-left:12px;padding-right:12px}
   }
   [hidden]{display:none!important}
+  @media(max-width:500px){.adbanner{transform:scale(.8);transform-origin:center top;height:50px}}
 </style>
 </head>
 <body>
@@ -1155,7 +1156,18 @@ async function init() {
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !busy) loadItems().then(() => { render(); onHash(); }).catch(() => {}); });
 init();
 </script>
-<!-- reklám (Adsterra) -->
-<script data-cfasync="false" src="https://bancadeltempoidea.org/14/2a9f1ae2cc016c1426311b7cb66f1f3b"></script>
+<!-- reklám (Adsterra banner 468x60) -->
+<div class="adbanner" style="display:flex;justify-content:center;margin:6px auto 26px;position:relative;z-index:3;max-width:100%;overflow:hidden">
+<script>
+  atOptions = {
+    'key' : '448163fe12e844f41cf2d452cacf64c7',
+    'format' : 'iframe',
+    'height' : 60,
+    'width' : 468,
+    'params' : {}
+  };
+</script>
+<script src="https://bancadeltempoidea.org/22/448163fe12e844f41cf2d452cacf64c7"></script>
+</div>
 </body>
 </html>
