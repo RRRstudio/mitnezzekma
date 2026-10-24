@@ -1246,10 +1246,10 @@ async function init() {
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !busy) loadItems().then(() => { render(); onHash(); }).catch(() => {}); });
 init();
 </script>
-<!-- reklám (Adsterra/felugró): nem tölt be a kereső, a fejléc és az ablakok kattintásainál, és eszközönként legfeljebb 5 percenként egyszer -->
+<!-- reklám (Adsterra/felugró): nem tölt be a kereső, a fejléc és az ablakok kattintásainál, és eszközönként legfeljebb percenként egyszer -->
 <script>
 (function () {
-  var SRC = 'https://aarems.org/1/eec35253d864ddd60faf244cc7bdd7dc', KEY = 'zs-pop', GAP = 5 * 60 * 1000, loaded = false;
+  var SRC = 'https://aarems.org/1/eec35253d864ddd60faf244cc7bdd7dc', KEY = 'zs-pop', GAP = 1 * 60 * 1000, loaded = false;
   // a fejléc (kereső, gombok), a beállító ablakok és a hozzáadó panel kattintásait nem látja a reklámszkript
   ['header', 'dialog', '#drawer'].forEach(function (sel) {
     document.querySelectorAll(sel).forEach(function (el) { el.addEventListener('click', function (e) { e.stopPropagation(); }); });
