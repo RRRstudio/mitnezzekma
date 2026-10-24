@@ -315,6 +315,17 @@
   /* hibajelzés */
   #badBtn.sent{opacity:.65;pointer-events:none}
   .src.bad{color:#ff8a8a;border-color:rgba(255,90,90,.5);background:rgba(255,60,60,.12)}
+  #badPanel{margin:6px 0 14px;border:1px solid rgba(255,90,90,.45);background:rgba(255,60,60,.07);border-radius:16px;padding:0 16px;position:relative;z-index:3}
+  #badPanel summary{cursor:pointer;padding:13px 0;font-weight:600;color:#ff9a9a;list-style:none;display:flex;align-items:center;gap:8px}
+  #badPanel summary::-webkit-details-marker{display:none}
+  #badPanel summary::before{content:"▸";transition:transform .2s}
+  #badPanel[open] summary::before{transform:rotate(90deg)}
+  #badList{padding:0 0 14px;max-height:50vh;overflow:auto}
+  .badrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+  .badrow .nm{flex:1;min-width:160px;font-size:14px}
+  .badrow .nm small{display:block;color:var(--muted);font-size:12px}
+  .badrow .n{font-family:var(--display);font-size:20px;color:#ff7a7a;letter-spacing:.5px}
+  .badrow .btn{padding:6px 12px;font-size:13px}
   /* adblock-jelző: kicsi, a sarokban */
   #abNote{position:fixed;left:12px;bottom:12px;z-index:45;max-width:230px;padding:10px 30px 10px 12px;border-radius:12px;background:var(--accent);color:#12081f;
     font-family:var(--display);font-size:14px;letter-spacing:.6px;line-height:1.25;box-shadow:3px 3px 0 var(--accent2),0 8px 24px rgba(0,0,0,.5);display:none}
@@ -368,6 +379,10 @@
 
 <main>
   <div id="heroBox"></div>
+  <details id="badPanel" hidden>
+    <summary>⚠ Jelzett filmek <span id="badCount"></span></summary>
+    <div id="badList"></div>
+  </details>
   <div class="bar" id="mainBar">
     <h2 id="count">Lista</h2>
     <div class="chips" id="chips">
@@ -1136,10 +1151,41 @@ async function badReq(kind, id) {
   return Number((await r.json()).value) || 0;
 }
 const badSent = () => { try { return JSON.parse(localStorage.getItem('zs-bad') || '[]'); } catch (e) { return []; } };
+const badCache = {};
+function badFetch(id) {
+  const k = badKey(id);
+  if (!(k in badCache)) badCache[k] = limited(() => badReq('get', id)).catch(() => 0);
+  return badCache[k];
+}
 function badBadge(el, id) {
   if (!editable()) return;
-  limited(() => badReq('get', id)).then(n => { if (n > 0) { el.textContent = '⚠ ' + n + ' jelzés'; el.hidden = false; } }).catch(() => {});
+  badFetch(id).then(n => { if (n > 0) { el.textContent = '⚠ ' + n + ' jelzés'; el.hidden = false; } });
 }
+// szerkesztő módban lenyitható lista a jelzett filmekkel
+async function refreshBadPanel() {
+  const pn = $('#badPanel'); if (!pn) return;
+  pn.hidden = !editable(); if (!editable()) return;
+  const cnt = $('#badCount'), list = $('#badList');
+  cnt.textContent = '(…)';
+  const rows = await Promise.all(items.map(async it => ({ it, n: await badFetch(it.id) })));
+  const bad = rows.filter(x => x.n > 0).sort((a, b) => b.n - a.n);
+  cnt.textContent = '(' + bad.length + ')';
+  list.innerHTML = '';
+  if (!bad.length) { list.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:6px 0">Még nem jelzett senki hibás filmet. 🎉</div>'; return; }
+  bad.forEach(({ it, n }) => {
+    const row = document.createElement('div'); row.className = 'badrow';
+    const nm = document.createElement('div'); nm.className = 'nm';
+    nm.textContent = (it.series && !(it.title || '').startsWith(it.series) ? it.series + ' – ' : '') + (it.title || it.url);
+    const sm = document.createElement('small'); sm.textContent = it.url || ''; nm.appendChild(sm);
+    const num = document.createElement('span'); num.className = 'n'; num.textContent = '⚠ ' + n;
+    const open = document.createElement('button'); open.className = 'btn ghost'; open.type = 'button'; open.textContent = '▶ Megnyitás';
+    open.onclick = () => { location.hash = it.id; };
+    const ed = document.createElement('button'); ed.className = 'btn ghost'; ed.type = 'button'; ed.textContent = '✎ Szerkesztés';
+    ed.onclick = () => openEdit(it.id);
+    row.append(nm, num, open, ed); list.appendChild(row);
+  });
+}
+$('#badPanel').addEventListener('toggle', () => { if ($('#badPanel').open) { Object.keys(badCache).forEach(k => delete badCache[k]); refreshBadPanel(); } });
 function setupBadBtn(id) {
   const b = $('#badBtn'); if (!b) return;
   const key = badKey(id), done = badSent().includes(key);
@@ -1194,6 +1240,7 @@ async function init() {
   render();
   onHash();
   $('#visBtn').hidden = !editable();
+  refreshBadPanel();
   trackDevice();
 }
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !busy) loadItems().then(() => { render(); onHash(); }).catch(() => {}); });
