@@ -5,6 +5,7 @@
     "title": "Jumanji 1.",
     "type": "videa",
     "src": "https://videa.hu/player?v=Eh4jNsbwqOqy7VhK",
+    "thumb": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMeGmdmFKywNqlCQMpLkT4GkDfsjPb1FUcH121y9EkQ&s=10",
     "label": "Videa",
     "category": "Kaland"
   },
@@ -13,6 +14,7 @@
     "url": "https://videa.hu/player?v=SdP1QnrQN0LmJUeZ",
     "title": "Jumanji 2.: Vár A Dzsungel",
     "type": "videa",
+    "thumb": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS44-pgEZVQ04K1xnLTSiP1VuDa86YJYU8RoMulFBtf3Q&s",
     "src": "https://videa.hu/player?v=SdP1QnrQN0LmJUeZ",
     "label": "Videa",
     "category": "Kaland"
@@ -23,6 +25,7 @@
     "title": "Jumanji 3.: A következő Szint",
     "type": "videa",
     "src": "https://videa.hu/player?v=3s0ZcOQ744kBTLA0",
+    "thumb": "https://image.tmdb.org/t/p/original/2RyMYPKmlUcT4BkVmPIOUV4X2iC.jpg",
     "label": "Videa",
     "category": "Kaland"
   },
