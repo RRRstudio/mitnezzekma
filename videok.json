@@ -2,10 +2,11 @@
   {
     "id": "mvnrbqckswh",
     "url": "https://videa.hu/player?v=MURrxvzdMu2rDah7",
-    "title": "Videa videó",
+    "title": "Forrest Gump",
     "type": "videa",
     "src": "https://videa.hu/player?v=MURrxvzdMu2rDah7",
-    "label": "Videa"
+    "label": "Videa",
+    "category": "Komédia"
   },
   {
     "id": "mvms28lara3",
