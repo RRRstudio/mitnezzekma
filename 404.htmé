@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b0612">
+<title>404 – Nincs ilyen oldal | mitnezzekma</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rubik:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px;color:#fff6e0;font-family:'Rubik',system-ui,sans-serif;
+    background:radial-gradient(900px 500px at 50% 0%,#2a1050,transparent 70%),#0b0612}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.13) 0 1px,transparent 1px 3px)}
+  main{position:relative;max-width:520px}
+  .big{font-family:'Bangers','Impact','Arial Black',sans-serif;font-size:clamp(90px,26vw,170px);line-height:.9;color:#ffe629;letter-spacing:3px;
+    text-shadow:4px 4px 0 #ff2e93,8px 8px 0 #12081f}
+  h1{font-family:'Bangers','Impact','Arial Black',sans-serif;font-weight:400;font-size:clamp(26px,6vw,36px);letter-spacing:1.5px;margin:18px 0 8px}
+  p{color:#b8a5d6;line-height:1.6;margin:0 0 26px}
+  a{display:inline-block;font-family:'Bangers','Impact','Arial Black',sans-serif;font-size:20px;letter-spacing:1px;text-decoration:none;color:#12081f;
+    background:linear-gradient(135deg,#ffe629,#ff2e93);padding:12px 26px;border-radius:999px;border:2px solid #12081f;box-shadow:3px 3px 0 #12081f}
+  a:hover{transform:translate(-1px,-2px)}
+  .tape{font-size:56px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<main>
+  <div class="tape" aria-hidden="true">📼</div>
+  <div class="big" aria-hidden="true">404</div>
+  <h1>Error 404</h1>
+  <p>Az oldal, amit kerestél, nem létezik vagy elköltözött. Térj vissza a főoldalra, és válassz egy másik filmet.</p>
+  <a href="/">← Vissza a főoldalra</a>
+</main>
+</body>
+</html>
