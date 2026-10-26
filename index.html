@@ -4,7 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b0612">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%BC%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="description" content="mitnezzekma – online filmek és sorozatok egy helyen: kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel. Válassz, és nézd meg egy kattintással.">
+<link rel="canonical" id="canon" href="/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mitnezzekma">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:title" content="mitnezzekma – Online filmek ingyen">
+<meta property="og:description" content="Online filmek és sorozatok egy helyen: kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel.">
+<meta property="og:image" content="/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mitnezzekma – Online filmek ingyen">
+<meta name="twitter:description" content="Online filmek és sorozatok egy helyen: kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel.">
+<meta name="twitter:image" content="/og.png">
 <meta name="google-site-verification" content="5YzGYYPuS-81KSIRH7DaH6LrAvRd0Tw1pUGfDAu0jss">
 <title>mitnezzekma – Online filmek ingyen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -331,6 +346,16 @@
     font-family:var(--display);font-size:14px;letter-spacing:.6px;line-height:1.25;box-shadow:3px 3px 0 var(--accent2),0 8px 24px rgba(0,0,0,.5);display:none}
   #abNote.on{display:block}
   #abNote button{position:absolute;right:4px;top:3px;border:0;background:none;color:#12081f;font-size:16px;line-height:1;cursor:pointer;padding:4px}
+  /* a hozzáadó panel mindig a (változó magasságú) fejléc alatt kezdődik, és ha kell, görgethető */
+  .drawer{top:calc(var(--hh, 84px) + 10px)!important;max-height:calc(100vh - var(--hh, 84px) - 24px);max-height:calc(100dvh - var(--hh, 84px) - 24px);overflow:auto}
+  /* mobil: ne lógjon ki semmi oldalra */
+  .overlay{overflow-x:hidden;overflow-x:clip}
+  .ambient{left:0;right:0}
+  @media(max-width:520px){
+    .hactions{flex-wrap:wrap;justify-content:center;gap:8px;max-width:100%;width:100%}
+    .hactions .btn{padding-left:13px;padding-right:13px}
+    .hactions .btn.icon{padding-left:12px;padding-right:12px}
+  }
 </style>
 </head>
 <body>
@@ -351,15 +376,15 @@
   </label>
   <div class="hactions">
     <span class="badge" id="badge">csak olvasás</span>
-    <button class="btn ghost dice" id="randBtn" title="Véletlen film (R)">🎲<span class="lbl"> Random</span></button>
+    <button class="btn ghost dice" id="randBtn" title="Véletlen film (R)" aria-label="Véletlen film">🎲<span class="lbl"> Random</span></button>
     <button class="btn" id="openAdd">＋ Új film</button>
-    <button class="btn ghost icon" id="visBtn" title="Látogatók (csak szerkesztőknek)" hidden>👁</button>
-    <button class="btn ghost icon" id="cfgBtn" title="Beállítások">⚙</button>
+    <button class="btn ghost icon" id="visBtn" title="Látogatók (csak szerkesztőknek)" aria-label="Látogatók" hidden>👁</button>
+    <button class="btn ghost icon" id="cfgBtn" title="Beállítások" aria-label="Beállítások">⚙</button>
   </div>
 </header>
 
 <div class="drawer" id="drawer">
-  <button class="btn ghost x" id="closeAdd" type="button" title="Bezárás">✕</button>
+  <button class="btn ghost x" id="closeAdd" type="button" title="Bezárás" aria-label="Bezárás">✕</button>
   <h3>📼 Új film</h3>
   <p class="sub">Illessz be egy linket vagy egy teljes beágyazó (iframe) kódot.</p>
   <form id="addForm">
@@ -412,7 +437,7 @@
       <button class="btn ghost" id="backBtn">← Vissza</button>
       <h2 id="nowTitle"></h2>
       <span class="viewsbig" id="nowViews"></span>
-      <a id="nowLink" href="#" target="_blank" rel="noopener">Megnyitás új lapon ↗</a>
+      <a id="nowLink" target="_blank" rel="noopener">Megnyitás új lapon ↗</a>
       <button class="btn ghost" id="badBtn" type="button">⚠ Film nem jó</button>
       <button class="btn ghost dice" id="randBtn2" title="Másik véletlen film (R)">🎲 Másik random</button>
     </div>
@@ -567,7 +592,7 @@ async function loadItems() {
     const r = await fetch(apiUrl() + (cfg.branch ? '?ref=' + encodeURIComponent(cfg.branch) + '&' : '?') + 't=' + Date.now(), { headers: headers(), cache: 'no-store' });
     if (r.status === 404) { items = []; sha = null; return; }
     if (r.status === 401 || r.status === 403) throw new Error('A token érvénytelen vagy nincs jogosultsága (Contents: Read and write).');
-    if (!r.ok) throw new Error('GitHub hiba: ' + r.status);
+    if (!r.ok) throw new Error('A GitHub most nem válaszol (' + r.status + '), próbáld újra egy perc múlva.');
     const j = await r.json();
     sha = j.sha;
     items = JSON.parse(b64decode(j.content) || '[]');
@@ -586,7 +611,7 @@ async function putItems(message) {
   const r = await fetch(apiUrl(), { method: 'PUT', headers: headers(), body: JSON.stringify(body) });
   if (r.status === 409 || r.status === 422) return 'conflict';
   if (r.status === 401 || r.status === 403) throw new Error('A token érvénytelen vagy nincs írási jogosultsága.');
-  if (!r.ok) throw new Error('Mentési hiba: ' + r.status);
+  if (!r.ok) throw new Error('A mentés nem sikerült (' + r.status + '). Ellenőrizd a kapcsolatot és próbáld újra.');
   sha = (await r.json()).content.sha;
   return 'ok';
 }
@@ -599,7 +624,7 @@ async function mutate(fn, message) {
     items = fn(items);
     if (await putItems(message) === 'ok') return true;
   }
-  throw new Error('Nem sikerült menteni (ütközés).');
+  throw new Error('Közben valaki más is módosította a listát, ezért a mentés nem sikerült. Frissíts, és próbáld újra.');
 }
 
 // ---- videó felismerés ----
@@ -807,7 +832,7 @@ let currentSeries = null;
 function makeCard(o) {
   const card = document.createElement('div'); card.className = 'card';
   card.style.setProperty('--i', Math.min(o.i || 0, 14));
-  const pic = document.createElement('div'); pic.className = 'pic' + (o.thumb ? '' : ' nothumb');
+  const pic = document.createElement('div'); pic.className = 'pic' + (o.thumb ? '' : ' nothumb'); pic.setAttribute('role', 'img'); pic.setAttribute('aria-label', (o.title || 'Film') + ' – borítókép');
   if (o.thumb) pic.style.backgroundImage = 'url(' + o.thumb + ')';
   else { const em = document.createElement('span'); em.className = 'emoji'; em.textContent = o.icon || '📼'; pic.appendChild(em); }
   if (o.tag) { const tg = document.createElement('div'); tg.className = 'tag'; tg.textContent = o.tag; pic.appendChild(tg); }
@@ -860,7 +885,7 @@ function makeHero(e) {
     kicker = '📺 Legújabb sorozat'; btn = '📺 Megnyitás'; action = () => { location.hash = 's/' + encodeURIComponent(e.name); };
   }
   const h = document.createElement('section'); h.className = 'hero';
-  const bg = document.createElement('div'); bg.className = 'hero-bg' + (thumb ? '' : ' nothumb');
+  const bg = document.createElement('div'); bg.className = 'hero-bg' + (thumb ? '' : ' nothumb'); bg.setAttribute('role', 'img'); bg.setAttribute('aria-label', 'Kiemelt film háttérképe');
   if (thumb) bg.style.backgroundImage = 'url(' + thumb + ')';
   const inn = document.createElement('div'); inn.className = 'hero-in';
   const k = document.createElement('span'); k.className = 'kicker'; k.textContent = kicker;
@@ -906,7 +931,8 @@ function renderMain(box) {
   if (!items.length) {
     if (loadErr && !editable()) {
       const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-      grid.innerHTML = '<div class="empty"><b>🔌</b>Nem sikerült betölteni a listát.<br><small>' + esc(loadErr) + '</small><br><small>Ellenőrizd a ⚙ alatt a repó tulajdonosát és nevét.</small></div>';
+      grid.innerHTML = '<div class="empty"><b>🔌</b>Most nem sikerült betölteni a filmeket.<br>Próbáld újra egy kis idő múlva.<br><button class="btn" id="retryLoad" type="button" style="margin-top:14px">↻ Újrapróbálom</button><details style="margin-top:12px"><summary style="cursor:pointer;font-size:12px;color:var(--muted)">Részletek</summary><small>' + esc(loadErr) + '</small></details></div>';
+      const rb = $('#retryLoad'); if (rb) rb.onclick = () => { rb.disabled = true; rb.textContent = 'Betöltés…'; loadItems().then(() => { render(); onHash(); }).catch(() => { rb.disabled = false; rb.textContent = '↻ Újrapróbálom'; }); };
     } else grid.innerHTML = '<div class="empty"><b>📼</b>Még üres, mint egy kihalt drive-in mozi.<br>Nyomd meg a „＋ Új film" gombot fent!</div>';
     return;
   }
@@ -1007,7 +1033,7 @@ function openPlayer(id) {
     box.appendChild(f);
   }
   $('#nowTitle').textContent = it.title;
-  $('#nowLink').href = it.url;
+  $('#nowLink').href = it.url; $('#nowLink').removeAttribute('hidden');
   $('#nowViews').textContent = '';
   hitView(id).then(v => {
     if (playing === id) $('#nowViews').textContent = '👁 ' + fmtViews(v) + ' megtekintés';
@@ -1044,6 +1070,18 @@ function goBack() {
   const it = items.find(i => i.id === playing);
   location.hash = it && it.series ? 's/' + encodeURIComponent(it.series) : '';
 }
+(function () {
+  const hd = document.querySelector('header'); if (!hd) return;
+  const set = () => document.documentElement.style.setProperty('--hh', hd.offsetHeight + 'px');
+  set(); window.addEventListener('resize', set);
+  if (window.ResizeObserver) new ResizeObserver(set).observe(hd);
+})();
+const BASE_TITLE = 'mitnezzekma – Online filmek ingyen';
+function syncMeta() {
+  const it = playing ? items.find(i => i.id === playing) : null;
+  document.title = it ? it.title + ' – mitnezzekma' : (currentSeries ? currentSeries + ' – mitnezzekma' : BASE_TITLE);
+  const c = $('#canon'); if (c) c.href = location.origin + location.pathname;
+}
 function onHash() {
   const h = location.hash.slice(1);
   const prevSeries = currentSeries;
@@ -1058,6 +1096,7 @@ function onHash() {
   } else {
     currentSeries = null; closePlayer(); render();
   }
+  syncMeta();
 }
 window.addEventListener('hashchange', onHash);
 $('#backBtn').onclick = goBack;
