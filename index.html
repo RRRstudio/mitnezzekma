@@ -342,6 +342,19 @@
   .badrow .nm small{display:block;color:var(--muted);font-size:12px}
   .badrow .n{font-family:var(--display);font-size:20px;color:#ff7a7a;letter-spacing:.5px}
   .badrow .btn{padding:6px 12px;font-size:13px}
+  /* bemutatkozó szöveg és címlista az oldal alján */
+  .about{position:relative;z-index:3;margin:40px 0 20px;padding:26px 24px;border:1px solid var(--line);border-radius:22px;background:var(--panel);color:var(--muted);line-height:1.7;font-size:14.5px}
+  .about h2{font-family:var(--display);font-weight:400;letter-spacing:1.2px;font-size:clamp(24px,3.4vw,34px);margin:0 0 10px;color:var(--text)}
+  .about h3{font-family:var(--display);font-weight:400;letter-spacing:1px;font-size:21px;margin:22px 0 8px;color:var(--text)}
+  .about p{margin:0 0 10px}
+  .about strong{color:var(--text);font-weight:600}
+  .about ul{margin:0;padding-left:20px}
+  .about li{margin:4px 0}
+  .about .muted{font-size:13px}
+  .alltitles{list-style:none;padding:0!important;display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:10px!important}
+  .alltitles li{margin:0}
+  .alltitles a{display:inline-block;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);text-decoration:none;font-size:12.5px;line-height:1.5}
+  .alltitles a:hover,.alltitles a:focus-visible{color:var(--text);border-color:var(--accent);outline:none}
   /* adblock-jelző: kicsi, a sarokban */
   #abNote{position:fixed;left:12px;bottom:12px;z-index:45;max-width:230px;padding:10px 30px 10px 12px;border-radius:12px;background:var(--accent);color:#12081f;
     font-family:var(--display);font-size:14px;letter-spacing:.6px;line-height:1.25;box-shadow:3px 3px 0 var(--accent2),0 8px 24px rgba(0,0,0,.5);display:none}
@@ -429,6 +442,22 @@
     <script async="async" data-cfasync="false" src="https://bancadeltempoidea.org/21/8c6d89939ec360819afa70a7d13d4ff4"></script>
     <div id="container-8c6d89939ec360819afa70a7d13d4ff4"></div>
   </div>
+  <section class="about" id="about" aria-labelledby="aboutTitle">
+    <h2 id="aboutTitle">Online filmek és sorozatok egy helyen</h2>
+    <p>A <strong>mitnezzekma</strong> egy filmes és sorozatos gyűjtőoldal, ahol nem kell sokáig keresgélned, mit nézz meg ma este. A címek kategóriákba rendezve várnak: komédia, rajzfilm, kaland, sci-fi, dráma, thriller, háborús filmek, anime és még sok más. Válaszd ki a kedvenc műfajodat, kattints a borítóra, és a film az oldalon belül azonnal elindul.</p>
+    <h3>Mit tud az oldal?</h3>
+    <ul>
+      <li><strong>Kategóriák:</strong> a főoldalon műfajok szerint görgethető sorokban látod a filmeket és sorozatokat, vagy egy kattintással csak egy kategóriát nézel.</li>
+      <li><strong>Sorozatok évadokkal és részekkel:</strong> a sorozatoknál az évadok és az epizódok külön listában vannak, az előző és a következő rész gombbal lépkedhetsz közöttük.</li>
+      <li><strong>Véletlen film:</strong> ha nem tudsz dönteni, a Random gomb kiválaszt neked egy véletlenszerű filmet vagy sorozatrészt.</li>
+      <li><strong>Keresés:</strong> a keresőmezőbe beírhatod a film vagy a sorozat címét.</li>
+      <li><strong>Telefonon és gépen is:</strong> az oldal mobilra is kényelmesen kezelhető, iPhone-on és Androidon is.</li>
+      <li><strong>Hibajelzés:</strong> ha egy film nem indul el, a „Film nem jó" gombbal jelezheted, hogy megnézhessük a linket.</li>
+    </ul>
+    <h3>Az összes cím</h3>
+    <p class="muted">A lista folyamatosan bővül, minden címre kattintva megnyílik a film vagy a sorozat.</p>
+    <ul class="alltitles" id="allTitles"></ul>
+  </section>
 </main>
 
 <div class="overlay" id="overlay">
@@ -1077,6 +1106,22 @@ function goBack() {
   set(); window.addEventListener('resize', set);
   if (window.ResizeObserver) new ResizeObserver(set).observe(hd);
 })();
+function renderAllTitles() {
+  const ul = document.getElementById('allTitles'); if (!ul) return;
+  ul.innerHTML = '';
+  const seen = new Set(), add = (href, text) => {
+    const li = document.createElement('li'), a = document.createElement('a'); a.href = href; a.textContent = text; li.appendChild(a); ul.appendChild(li);
+  };
+  items.forEach(it => {
+    if (it.series) {
+      const k = skey(it.series); if (seen.has(k)) return; seen.add(k);
+      add('#s/' + encodeURIComponent(it.series), it.series + ' (sorozat)');
+    } else add('#' + it.id, it.title || it.url);
+  });
+  document.getElementById('about').style.display = '';
+}
+const _render = render;
+render = function () { _render.apply(this, arguments); renderAllTitles(); };
 const BASE_TITLE = 'mitnezzekma – Online filmek ingyen';
 function syncMeta() {
   const it = playing ? items.find(i => i.id === playing) : null;
