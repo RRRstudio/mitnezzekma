@@ -7,19 +7,20 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="description" content="mitnezzekma – online filmek és sorozatok egy helyen: kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel. Válassz, és nézd meg egy kattintással.">
-<link rel="canonical" id="canon" href="/">
+<link rel="canonical" href="https://mitnezzekma.vercel.app/">
+<meta property="og:url" content="https://mitnezzekma.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="mitnezzekma">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:title" content="mitnezzekma – Online filmek ingyen">
 <meta property="og:description" content="Online filmek és sorozatok egy helyen: kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel.">
-<meta property="og:image" content="/og.png">
+<meta property="og:image" content="https://mitnezzekma.vercel.app/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="mitnezzekma – Online filmek ingyen">
 <meta name="twitter:description" content="Online filmek és sorozatok egy helyen: kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel.">
-<meta name="twitter:image" content="/og.png">
+<meta name="twitter:image" content="https://mitnezzekma.vercel.app/og.png">
 <meta name="google-site-verification" content="5YzGYYPuS-81KSIRH7DaH6LrAvRd0Tw1pUGfDAu0jss">
 <title>mitnezzekma – Online filmek ingyen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1080,7 +1081,6 @@ const BASE_TITLE = 'mitnezzekma – Online filmek ingyen';
 function syncMeta() {
   const it = playing ? items.find(i => i.id === playing) : null;
   document.title = it ? it.title + ' – mitnezzekma' : (currentSeries ? currentSeries + ' – mitnezzekma' : BASE_TITLE);
-  const c = $('#canon'); if (c) c.href = location.origin + location.pathname;
 }
 function onHash() {
   const h = location.hash.slice(1);
