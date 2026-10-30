@@ -6,23 +6,33 @@
 <meta name="theme-color" content="#0b0612">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="description" content="mitnezzekma – online filmek és sorozatok egy helyen: kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel. Válassz, és nézd meg egy kattintással.">
+<meta name="description" content="mitnezzekma: online filmek és sorozatok egy helyen. Kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel.">
 <link rel="canonical" href="https://mitnezzekma.vercel.app/">
 <meta property="og:url" content="https://mitnezzekma.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="mitnezzekma">
 <meta property="og:locale" content="hu_HU">
-<meta property="og:title" content="mitnezzekma – Online filmek ingyen">
+<meta property="og:title" content="mitnezzekma | Online filmek ingyen">
 <meta property="og:description" content="Online filmek és sorozatok egy helyen: kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel.">
 <meta property="og:image" content="https://mitnezzekma.vercel.app/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="mitnezzekma – Online filmek ingyen">
+<meta name="twitter:title" content="mitnezzekma | Online filmek ingyen">
 <meta name="twitter:description" content="Online filmek és sorozatok egy helyen: kategóriák, véletlen film gomb, sorozatok évadokkal és részekkel.">
 <meta name="twitter:image" content="https://mitnezzekma.vercel.app/og.png">
 <meta name="google-site-verification" content="5YzGYYPuS-81KSIRH7DaH6LrAvRd0Tw1pUGfDAu0jss">
-<title>mitnezzekma – Online filmek ingyen</title>
+<title>mitnezzekma | Online filmek ingyen</title>
+<script>
+// téma: mentett választás, különben a rendszer beállítása
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('zs-theme'); } catch (e) {}
+  if (t !== 'light' && t !== 'dark') t = (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', t === 'light' ? '#f6f0ff' : '#0b0612');
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,7 +40,7 @@
   @property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
   :root{
     --bg:#0b0612;--bg2:#150a22;--panel:rgba(255,255,255,.05);--solid:#1c0f2e;
-    --text:#fff6e0;--muted:#b8a5d6;--accent:#ffe629;--accent2:#ff2e93;
+    --text:#fff6e0;--muted:#b8a5d6;--accent:#ffe629;--accent-text:#ffe629;--accent2:#ff2e93;
     --line:rgba(255,230,41,.2);--glow:0 0 60px rgba(255,46,147,.28);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -62,7 +72,7 @@
   header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent2),var(--accent),var(--accent2),transparent);opacity:.8}
   .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
   .logo{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:28px;
-    background:linear-gradient(135deg,#ff2e93,#7a2cff);box-shadow:0 6px 22px rgba(255,46,147,.45),inset 0 1px 0 rgba(255,255,255,.35);animation:wobble 4s ease-in-out infinite}
+    background:linear-gradient(135deg,#ff2e93,#7a2cff);box-shadow:0 6px 22px rgba(255,46,147,.45),inset 0 1px 0 rgba(255,255,255,.35);}
   @keyframes wobble{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(7deg) scale(1.06)}}
   h1{margin:0;font-size:27px;line-height:1;font-weight:700;letter-spacing:.3px}
   .grad{background:linear-gradient(90deg,#fff27a,#ff5cae,#fff27a);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 5s linear infinite}
@@ -115,7 +125,7 @@
   .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;animation:kenburns 22s ease-in-out infinite alternate}
   @keyframes kenburns{from{transform:scale(1.01)}to{transform:scale(1.06) translate(-.6%,-.4%)}}
   .hero-bg.nothumb{background:radial-gradient(circle at 78% 42%,#6a2fb8,#12081f 62%)}
-  .hero-bg.nothumb::after{content:'📼';position:absolute;right:9%;top:50%;font-size:clamp(130px,24vw,320px);transform:translateY(-50%);animation:bob 4.5s ease-in-out infinite;filter:drop-shadow(0 24px 40px rgba(0,0,0,.55))}
+  .hero-bg.nothumb::after{content:'M';font-family:var(--display,inherit);color:rgba(255,255,255,.1);position:absolute;right:9%;top:50%;font-size:clamp(130px,24vw,320px);transform:translateY(-50%);animation:bob 4.5s ease-in-out infinite;filter:drop-shadow(0 24px 40px rgba(0,0,0,.55))}
   @keyframes bob{0%,100%{transform:translateY(-50%) rotate(-4deg)}50%{transform:translateY(-56%) rotate(5deg)}}
   .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,6,18,.94) 0%,rgba(11,6,18,.6) 42%,transparent 78%),linear-gradient(0deg,rgba(11,6,18,.9),transparent 55%)}
   .hero-in{position:relative;z-index:2;padding:clamp(20px,4vw,48px);max-width:720px}
@@ -137,7 +147,7 @@
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:24px;margin-bottom:30px}
   @media(max-width:560px){.grid{grid-template-columns:1fr;gap:18px}main{padding:18px 14px 70px}}
-  .season h3{margin:8px 0 14px;font-size:21px;color:var(--accent);display:flex;align-items:center;gap:10px}
+  .season h3{margin:8px 0 14px;font-size:21px;color:var(--accent-text);display:flex;align-items:center;gap:10px}
   .season h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
 
   /* kategóriák */
@@ -149,9 +159,9 @@
   .catrow{margin-bottom:6px}
   .rowhead{display:flex;align-items:center;gap:12px;margin:6px 2px 0}
   .rowhead h3{margin:0;font-size:24px;font-weight:700;cursor:pointer;display:flex;align-items:baseline;gap:10px;transition:color .2s}
-  .rowhead h3:hover{color:var(--accent)}
+  .rowhead h3:hover{color:var(--accent-text)}
   .rowhead h3 small{font-size:14px;color:var(--muted);font-weight:500}
-  .rowhead .more{font-size:13px;color:var(--accent);opacity:0;transform:translateX(-6px);transition:all .25s}
+  .rowhead .more{font-size:13px;color:var(--accent-text);opacity:0;transform:translateX(-6px);transition:all .25s}
   .rowhead h3:hover .more{opacity:1;transform:none}
   .arrows{margin-left:auto;display:flex;gap:8px}
   .arrows button{width:38px;height:38px;padding:0;border-radius:50%;font-size:20px;line-height:1}
@@ -194,8 +204,8 @@
   .src{display:inline-block;margin-top:10px;padding:3px 11px;border-radius:999px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.07);border:1px solid var(--line)}
   .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
   .tags .src{margin-top:0}
-  .src.views{color:var(--accent);border-color:rgba(255,230,41,.3);background:rgba(255,230,41,.08);font-variant-numeric:tabular-nums}
-  .viewsbig{font-size:14px;color:var(--accent);padding:8px 14px;border-radius:999px;border:1px solid rgba(255,230,41,.35);background:rgba(255,230,41,.1);white-space:nowrap}
+  .src.views{color:var(--accent-text);border-color:rgba(255,230,41,.3);background:rgba(255,230,41,.08);font-variant-numeric:tabular-nums}
+  .viewsbig{font-size:14px;color:var(--accent-text);padding:8px 14px;border-radius:999px;border:1px solid rgba(255,230,41,.35);background:rgba(255,230,41,.1);white-space:nowrap}
   .viewsbig:empty{display:none}
   .cbtn{position:absolute;top:12px;z-index:4;width:34px;height:34px;padding:0;border:1px solid rgba(255,255,255,.25);border-radius:50%;
     background:rgba(11,6,18,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-size:16px;line-height:1;cursor:pointer;opacity:0;transform:scale(.8);transition:all .2s}
@@ -370,11 +380,97 @@
     .hactions .btn{padding-left:13px;padding-right:13px}
     .hactions .btn.icon{padding-left:12px;padding-right:12px}
   }
+
+  /* ===== kereső + témaváltó gomb ===== */
+  .searchrow{flex:1 1 260px;max-width:580px;margin:0 auto;display:flex;align-items:center;gap:10px}
+  .searchrow .search{flex:1 1 auto;max-width:none;margin:0;min-width:0}
+  .themebtn{flex:none;width:46px;height:46px;padding:0;display:grid;place-items:center;border-radius:50%}
+  .themebtn svg{transition:transform .5s cubic-bezier(.2,.9,.3,1.3),opacity .25s;grid-area:1/1}
+  .themebtn .i-sun{opacity:1;color:var(--accent)}
+  .themebtn .i-moon{opacity:0;transform:rotate(-90deg) scale(.5)}
+  :root[data-theme="light"] .themebtn .i-sun{opacity:0;transform:rotate(90deg) scale(.5)}
+  :root[data-theme="light"] .themebtn .i-moon{opacity:1;transform:none;color:#6a1fc9}
+  .themebtn:hover svg{transform:rotate(18deg)}
+  @media(max-width:700px){.searchrow{order:3;flex-basis:100%;max-width:none}}
+
+  /* ===== VILÁGOS MÓD ===== */
+  :root[data-theme="light"]{
+    color-scheme:light;
+    --bg:#f6f0ff;--bg2:#ece3ff;--panel:rgba(60,20,110,.05);--solid:#ffffff;
+    --text:#1d1030;--muted:#5d4a7e;--accent-text:#6a1fc9;
+    --line:rgba(106,31,201,.22);--glow:0 0 50px rgba(255,46,147,.14);
+  }
+  :root[data-theme="light"] body{background:
+      radial-gradient(900px 600px at 12% -5%,rgba(255,46,147,.14),transparent 60%),
+      radial-gradient(800px 600px at 95% 10%,rgba(255,230,41,.3),transparent 60%),
+      radial-gradient(900px 700px at 50% 110%,rgba(122,44,255,.13),transparent 60%),
+      var(--bg);background-attachment:fixed}
+  :root[data-theme="light"] body::before{opacity:.22}
+  :root[data-theme="light"] body::after{opacity:.035}
+  :root[data-theme="light"] header{background:rgba(255,255,255,.74)}
+  :root[data-theme="light"] .search,
+  :root[data-theme="light"] .badge,
+  :root[data-theme="light"] .chips,
+  :root[data-theme="light"] .catbar .chip,
+  :root[data-theme="light"] .src,
+  :root[data-theme="light"] .hint,
+  :root[data-theme="light"] .ov-top a,
+  :root[data-theme="light"] .alltitles a{background:rgba(60,20,110,.06)}
+  :root[data-theme="light"] .btn.ghost{background:rgba(60,20,110,.07)}
+  :root[data-theme="light"] .btn.ghost:hover{background:rgba(60,20,110,.14)}
+  :root[data-theme="light"] .ov-top a:hover{background:rgba(60,20,110,.14)}
+  :root[data-theme="light"] input,
+  :root[data-theme="light"] select,
+  :root[data-theme="light"] textarea{background:rgba(255,255,255,.85)}
+  :root[data-theme="light"] .drawer,
+  :root[data-theme="light"] dialog{background:rgba(255,255,255,.96);color:var(--text);box-shadow:0 18px 50px rgba(60,20,110,.22),var(--glow)}
+  :root[data-theme="light"] dialog::backdrop{background:rgba(40,20,80,.45)}
+  :root[data-theme="light"] .overlay::after{background:none}
+  :root[data-theme="light"] .ambient{opacity:.3}
+  :root[data-theme="light"] .card{background:#fff;box-shadow:0 8px 26px rgba(60,20,110,.12)}
+  :root[data-theme="light"] .about{background:rgba(255,255,255,.7)}
+  /* a főcím-banner a képen marad sötét, ezért ott a világos szövegek maradnak */
+  :root[data-theme="light"] .hero{--text:#fff6e0;--muted:#d6c8ef}
+  /* kiemelések világos alapon */
+  :root[data-theme="light"] .grad{color:#ffe629;text-shadow:2px 2px 0 #12081f,4px 4px 0 var(--accent2)}
+  :root[data-theme="light"] .slogan{color:#c1127a}
+  :root[data-theme="light"] #seriesBar h2{color:#12081f;text-shadow:3px 3px 0 var(--accent)}
+  :root[data-theme="light"] .bar h2,
+  :root[data-theme="light"] .rowhead h3{color:var(--text)}
+  :root[data-theme="light"] .rowhead h3:hover{color:var(--accent-text)}
+  :root[data-theme="light"] .src.views,
+  :root[data-theme="light"] .viewsbig{background:rgba(106,31,201,.08);border-color:rgba(106,31,201,.3)}
+  :root[data-theme="light"] .chip.active{color:#12081f}
+  :root[data-theme="light"] #badPanel summary,
+  :root[data-theme="light"] .badrow .n{color:#c4121f}
+  :root[data-theme="light"] .src.bad{color:#c4121f;background:rgba(196,18,31,.08)}
+  :root[data-theme="light"] .toast{background:#1d1030;color:#fff6e0}
+  :root[data-theme="light"] .search input,
+  :root[data-theme="light"] .search input:focus{background:none}
+  :root[data-theme="light"] .ambient{opacity:.18}
+  :root[data-theme="light"] .badge.on{color:#1b7a3a;background:rgba(40,170,80,.12);border-color:rgba(40,170,80,.45)}
+  :root[data-theme="light"] input::placeholder{color:#8a78a8}
+  .ic{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;flex:none}
+  .search>span{display:grid;place-items:center;color:var(--muted)}
+  .btn .ic{margin-right:.35em}
+  .btn.icon .ic,.btn.x .ic,#abClose .ic,.cbtn .ic{margin:0}
+  .viewsbig .ic,.src.views .ic{margin-right:.3em}
+  /* nem "pill" alak: négyszögletesebb gombok, szűrők és mezők */
+  .btn{border-radius:10px}
+  .btn.icon,.btn.x,.themebtn{border-radius:10px}
+  .chips{border-radius:14px}
+  .chip{border-radius:10px}
+  .catbar .chip{border-radius:10px}
+  .badge,.src,.viewsbig,.alltitles a,.ov-top a{border-radius:8px}
+  .search{border-radius:12px}
+  .searchrow .search{border-radius:12px}
+
+  .sitefoot{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;padding:22px 16px 34px;font-size:13px;color:var(--muted);position:relative;z-index:3}
+  .sitefoot a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+  .sitefoot a:hover{color:var(--text)}
 </style>
 </head>
 <body>
-<div id="floaties"></div>
-<div class="spot" id="spot"></div>
 
 <header>
   <a class="brand" href="#">
@@ -384,22 +480,28 @@
       <div class="slogan">Online filmek ingyen</div>
     </div>
   </a>
-  <label class="search">
-    <span>🔍</span>
-    <input id="search" type="search" placeholder="Keresés a filmek között…" autocomplete="off">
-  </label>
+  <div class="searchrow">
+    <label class="search">
+      <span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+      <input id="search" type="search" placeholder="Keresés a filmek között…" autocomplete="off">
+    </label>
+    <button class="btn ghost icon themebtn" id="themeBtn" type="button" title="Világos / sötét mód" aria-label="Váltás világos és sötét mód között">
+      <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21 14.5A8.5 8.5 0 0 1 9.5 3a.7.7 0 0 0-.9-.9A10 10 0 1 0 21.9 15.4a.7.7 0 0 0-.9-.9z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M18.7 5.3L17 7M7 17l-1.7 1.7"/></g></svg>
+    </button>
+  </div>
   <div class="hactions">
     <span class="badge" id="badge">csak olvasás</span>
-    <button class="btn ghost dice" id="randBtn" title="Véletlen film (R)" aria-label="Véletlen film">🎲<span class="lbl"> Random</span></button>
+    <button class="btn ghost dice" id="randBtn" title="Véletlen film (R)" aria-label="Véletlen film"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><circle cx="8.5" cy="8.5" r=".8" fill="currentColor"/><circle cx="15.5" cy="8.5" r=".8" fill="currentColor"/><circle cx="12" cy="12" r=".8" fill="currentColor"/><circle cx="8.5" cy="15.5" r=".8" fill="currentColor"/><circle cx="15.5" cy="15.5" r=".8" fill="currentColor"/></svg><span class="lbl">Random</span></button>
     <button class="btn" id="openAdd">＋ Új film</button>
-    <button class="btn ghost icon" id="visBtn" title="Látogatók (csak szerkesztőknek)" aria-label="Látogatók" hidden>👁</button>
-    <button class="btn ghost icon" id="cfgBtn" title="Beállítások" aria-label="Beállítások">⚙</button>
+    <button class="btn ghost icon" id="visBtn" title="Látogatók (csak szerkesztőknek)" aria-label="Látogatók" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    <button class="btn ghost icon" id="cfgBtn" title="Beállítások" aria-label="Beállítások"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </div>
 </header>
 
 <div class="drawer" id="drawer">
-  <button class="btn ghost x" id="closeAdd" type="button" title="Bezárás" aria-label="Bezárás">✕</button>
-  <h3>📼 Új film</h3>
+  <button class="btn ghost x" id="closeAdd" type="button" title="Bezárás" aria-label="Bezárás"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <h3>Új film</h3>
   <p class="sub">Illessz be egy linket vagy egy teljes beágyazó (iframe) kódot.</p>
   <form id="addForm">
     <input id="url" type="text" inputmode="url" placeholder="Link vagy iframe kód…" required autocomplete="off">
@@ -410,7 +512,7 @@
       <input id="season" type="number" min="1" placeholder="Évad">
       <input id="episode" type="number" min="1" placeholder="Rész">
     </div>
-    <button class="btn" type="submit" id="addBtn">Hozzáad 📼</button>
+    <button class="btn" type="submit" id="addBtn">Hozzáad</button>
   </form>
 </div>
 <datalist id="seriesNames"></datalist>
@@ -419,7 +521,7 @@
 <main>
   <div id="heroBox"></div>
   <details id="badPanel" hidden>
-    <summary>⚠ Jelzett filmek <span id="badCount"></span></summary>
+    <summary><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>Jelzett filmek <span id="badCount"></span></summary>
     <div id="badList"></div>
   </details>
   <div class="bar" id="mainBar">
@@ -444,21 +546,19 @@
   </div>
   <section class="about" id="about" aria-labelledby="aboutTitle">
     <h2 id="aboutTitle">Online filmek és sorozatok egy helyen</h2>
-    <p>A <strong>mitnezzekma</strong> egy filmes és sorozatos gyűjtőoldal, ahol nem kell sokáig keresgélned, mit nézz meg ma este. A címek kategóriákba rendezve várnak: komédia, rajzfilm, kaland, sci-fi, dráma, thriller, háborús filmek, anime és még sok más. Válaszd ki a kedvenc műfajodat, kattints a borítóra, és a film az oldalon belül azonnal elindul.</p>
-    <h3>Mit tud az oldal?</h3>
-    <ul>
-      <li><strong>Kategóriák:</strong> a főoldalon műfajok szerint görgethető sorokban látod a filmeket és sorozatokat, vagy egy kattintással csak egy kategóriát nézel.</li>
-      <li><strong>Sorozatok évadokkal és részekkel:</strong> a sorozatoknál az évadok és az epizódok külön listában vannak, az előző és a következő rész gombbal lépkedhetsz közöttük.</li>
-      <li><strong>Véletlen film:</strong> ha nem tudsz dönteni, a Random gomb kiválaszt neked egy véletlenszerű filmet vagy sorozatrészt.</li>
-      <li><strong>Keresés:</strong> a keresőmezőbe beírhatod a film vagy a sorozat címét.</li>
-      <li><strong>Telefonon és gépen is:</strong> az oldal mobilra is kényelmesen kezelhető, iPhone-on és Androidon is.</li>
-      <li><strong>Hibajelzés:</strong> ha egy film nem indul el, a „Film nem jó" gombbal jelezheted, hogy megnézhessük a linket.</li>
-    </ul>
+    <p>A mitnezzekma egy gyűjtőoldal filmekhez és sorozatokhoz. A címeket műfajok szerint rendeztem sorokba, így nem kell sokat keresgélned: görgess a kedvenc kategóriádig, kattints a borítóra, és a lejátszó az oldalon belül megnyílik.</p>
+    <h3>Hogyan működik?</h3>
+    <p>A sorozatoknál az évadok és a részek külön listában vannak, a lejátszó alatt pedig léptethetsz az előző és a következő részre. Ha nem tudod, mit nézz, nyomj a Random gombra, vagy írd be a címet a keresőbe. A telefonos nézet is használható, iPhone-on és Androidon egyaránt. Ha egy film nem indul el, a „Film nem jó" gombbal szólhatsz, és megnézem a linket.</p>
     <h3>Az összes cím</h3>
     <p class="muted">A lista folyamatosan bővül, minden címre kattintva megnyílik a film vagy a sorozat.</p>
     <ul class="alltitles" id="allTitles"></ul>
   </section>
 </main>
+<footer class="sitefoot">
+  <span>mitnezzekma</span>
+  <a href="/felhasznalasi-feltetelek.html">Felhasználási feltételek</a>
+  <a href="/adatvedelem.html">Adatvédelem</a>
+</footer>
 
 <div class="overlay" id="overlay">
   <div class="ambient" id="ambient"></div>
@@ -468,8 +568,8 @@
       <h2 id="nowTitle"></h2>
       <span class="viewsbig" id="nowViews"></span>
       <a id="nowLink" target="_blank" rel="noopener">Megnyitás új lapon ↗</a>
-      <button class="btn ghost" id="badBtn" type="button">⚠ Film nem jó</button>
-      <button class="btn ghost dice" id="randBtn2" title="Másik véletlen film (R)">🎲 Másik random</button>
+      <button class="btn ghost" id="badBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>Film nem jó</button>
+      <button class="btn ghost dice" id="randBtn2" title="Másik véletlen film (R)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><circle cx="8.5" cy="8.5" r=".8" fill="currentColor"/><circle cx="15.5" cy="8.5" r=".8" fill="currentColor"/><circle cx="12" cy="12" r=".8" fill="currentColor"/><circle cx="8.5" cy="15.5" r=".8" fill="currentColor"/><circle cx="15.5" cy="15.5" r=".8" fill="currentColor"/></svg>Másik random</button>
     </div>
     <div class="player" id="player"></div>
     <div class="ov-nav" id="ovNav">
@@ -482,7 +582,7 @@
 </div>
 
 <dialog id="cfgDlg">
-  <h3>⚙ Beállítások</h3>
+  <h3>Beállítások</h3>
   <label>GitHub token (csak szerkesztéshez)</label>
   <input id="cfgToken" type="password" placeholder="github_pat_…" autocomplete="off">
   <label>Repó tulajdonosa</label>
@@ -500,8 +600,8 @@
 </dialog>
 
 <dialog id="visDlg">
-  <h3>👁 Látogatók</h3>
-  <div style="text-align:center;margin:18px 0 6px"><div id="visNum" style="font-family:var(--display);font-size:64px;line-height:1;color:var(--accent);text-shadow:3px 3px 0 var(--accent2)">…</div>
+  <h3>Látogatók</h3>
+  <div style="text-align:center;margin:18px 0 6px"><div id="visNum" style="font-family:var(--display);font-size:64px;line-height:1;color:var(--accent-text);text-shadow:3px 3px 0 var(--accent2)">…</div>
   <div style="color:var(--muted);font-size:14px;margin-top:8px">különböző eszközről látogatták az oldalt</div></div>
   <p id="visInfo"></p>
   <p>Minden böngésző egyszer számít. Aki törli a böngészőadatait vagy másik böngészőt használ, újra beleszámít. A saját szerkesztő gépedet nem számoljuk.</p>
@@ -509,7 +609,7 @@
 </dialog>
 
 <dialog id="editDlg">
-  <h3>✎ Szerkesztés</h3>
+  <h3>Szerkesztés</h3>
   <label>Cím</label>
   <input id="edTitle" type="text">
   <label>Kategória</label>
@@ -533,30 +633,12 @@ const FILE = 'videok.json';
 const CFG_KEY = 'mozi-cfg-v1';
 const LEGACY_KEY = 'mozi-library-v1';
 const $ = s => document.querySelector(s);
+const ICONS = {"search": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M21 21l-4.3-4.3\"/></svg>", "dice": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3.5\" y=\"3.5\" width=\"17\" height=\"17\" rx=\"3.5\"/><circle cx=\"8.5\" cy=\"8.5\" r=\".8\" fill=\"currentColor\"/><circle cx=\"15.5\" cy=\"8.5\" r=\".8\" fill=\"currentColor\"/><circle cx=\"12\" cy=\"12\" r=\".8\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"15.5\" r=\".8\" fill=\"currentColor\"/><circle cx=\"15.5\" cy=\"15.5\" r=\".8\" fill=\"currentColor\"/></svg>", "eye": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>", "gear": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z\"/></svg>", "x": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg>", "pencil": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z\"/></svg>", "warn": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z\"/><path d=\"M12 9v4M12 17h.01\"/></svg>", "check": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 6L9 17l-5-5\"/></svg>"};
+const ico = n => ICONS[n] || '';
 let toastT = null;
 const toast = m => { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); };
 
-// ---- látvány: lebegő kellékek, fényfolt, kártya-dőlés ----
-(function fx() {
-  const f = $('#floaties'); const em = ['📼', '🍿', '👽', '🎬', '🧟', '🦖', '🛸', '📼', '⭐', '👻'];
-  for (let i = 0; i < 18; i++) {
-    const s = document.createElement('span'); s.textContent = em[i % em.length];
-    s.style.cssText = `left:${Math.random() * 100}%;font-size:${16 + Math.random() * 30}px;animation-duration:${16 + Math.random() * 20}s;animation-delay:${-Math.random() * 36}s`;
-    f.appendChild(s);
-  }
-  const spot = $('#spot');
-  window.addEventListener('pointermove', e => { spot.style.transform = `translate(${e.clientX}px,${e.clientY}px)`; }, { passive: true });
-  if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
-    const c = $('#content');
-    c.addEventListener('pointermove', e => {
-      const card = e.target.closest('.card'); if (!card || card.classList.contains('skel')) return;
-      const r = card.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-      card.style.setProperty('--mx', (x * 100) + '%'); card.style.setProperty('--my', (y * 100) + '%');
-      card.style.transform = `perspective(900px) rotateX(${(.5 - y) * 9}deg) rotateY(${(x - .5) * 11}deg) translateY(-7px) scale(1.025)`;
-    });
-    c.addEventListener('pointerout', e => { const card = e.target.closest('.card'); if (card && !card.contains(e.relatedTarget)) card.style.transform = ''; });
-  }
-})();
+
 // töltés-vázlat
 $('#content').innerHTML = '<div class="grid">' + '<div class="card skel"><div class="pic"></div><div class="info"><div class="sk-line"></div><div class="sk-line short"></div></div></div>'.repeat(8) + '</div>';
 
@@ -648,7 +730,7 @@ async function putItems(message) {
 
 // mindig friss állapotra alkalmazza a módosítást, ütközésnél újrapróbál
 async function mutate(fn, message) {
-  if (!editable()) { toast('Szerkesztéshez add meg a tokent (⚙)'); openCfg(); return false; }
+  if (!editable()) { toast('Szerkesztéshez add meg a tokent a beállításokban'); openCfg(); return false; }
   for (let i = 0; i < 3; i++) {
     await loadItems();
     items = fn(items);
@@ -721,8 +803,6 @@ function updateNames() {
   cats.forEach(n => { const o = document.createElement('option'); o.value = n; $('#catNames').appendChild(o); });
 }
 const DEFAULT_CATS = ['Komédia', 'Rajzfilm', 'Akció', 'Horror', 'Dráma', 'Sci-fi', 'Családi', 'Kaland', 'Romantikus', 'Thriller', 'Dokumentum', 'Zene'];
-const CAT_EMOJI = { komedia: '😂', vigjatek: '😂', rajzfilm: '🎨', animacio: '🎨', mese: '🧚', anime: '🌸', akcio: '💥', horror: '👻', hatborzongato: '👻', drama: '🎭', 'sci-fi': '🚀', scifi: '🚀', fantasy: '🧙', csaladi: '👨‍👩‍👧', kaland: '🧭', romantikus: '💕', thriller: '🔪', krimi: '🕵️', dokumentum: '🎥', zene: '🎵', egyeb: '📦' };
-const catEmoji = n => CAT_EMOJI[(n || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase()] || '🎬';
 
 // ---- műveletek ----
 // Elfogad sima linket és teljes <iframe …> beágyazó kódot is
@@ -737,7 +817,7 @@ let busy = false;
 async function addItem(url, name) {
   url = normalizeInput(url);
   if (!/^https?:\/\//i.test(url)) { toast('Érvényes linket adj meg (http/https)'); return false; }
-  if (!editable()) { toast('Szerkesztéshez add meg a tokent (⚙)'); openCfg(); return false; }
+  if (!editable()) { toast('Szerkesztéshez add meg a tokent a beállításokban'); openCfg(); return false; }
   if (busy) return false; busy = true; $('#addBtn').disabled = true;
   try {
     const dup = items.find(i => i.url === url);
@@ -757,14 +837,14 @@ async function addItem(url, name) {
     const p = parse(url);
     let title = name && name.trim();
     if (!title && ['youtube', 'vimeo', 'dailymotion'].includes(p.type)) title = await fetchTitle(url);
-    if (!title && series) title = series + ' – ' + season + '. évad ' + episode + '. rész';
+    if (!title && series) title = series + ' ' + season + '. évad ' + episode + '. rész';
     if (!title && ['indavideo', 'videa', 'vk'].includes(p.type)) title = p.label + ' videó';
     if (!title) title = fallbackTitle(url);
     const item = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), url, title, ...p };
     if (series) { item.series = series; item.season = season; item.episode = episode; }
     if (category) item.category = category;
     if (await mutate(arr => arr.some(i => i.url === url) ? arr : [item, ...arr], 'Hozzáadva: ' + title.slice(0, 60))) {
-      render(); toast('Hozzáadva ✔ 📼');
+      render(); toast('Hozzáadva');
       return true;
     }
     return false;
@@ -848,7 +928,7 @@ async function hitView(id) {
 }
 let vObs = null;
 function watchViews(el) {
-  const go = () => getViews(el.dataset.id).then(n => { el.textContent = '👁 ' + fmtViews(n); }).catch(() => {});
+  const go = () => getViews(el.dataset.id).then(n => { el.innerHTML = ico('eye') + fmtViews(n); }).catch(() => {});
   if (!('IntersectionObserver' in window)) { go(); return; }
   if (!vObs) vObs = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { vObs.unobserve(en.target); en.target.__go(); } }), { rootMargin: '200px' });
   el.__go = go; vObs.observe(el);
@@ -862,9 +942,9 @@ let currentSeries = null;
 function makeCard(o) {
   const card = document.createElement('div'); card.className = 'card';
   card.style.setProperty('--i', Math.min(o.i || 0, 14));
-  const pic = document.createElement('div'); pic.className = 'pic' + (o.thumb ? '' : ' nothumb'); pic.setAttribute('role', 'img'); pic.setAttribute('aria-label', (o.title || 'Film') + ' – borítókép');
+  const pic = document.createElement('div'); pic.className = 'pic' + (o.thumb ? '' : ' nothumb'); pic.setAttribute('role', 'img'); pic.setAttribute('aria-label', (o.title || 'Film') + ', borítókép');
   if (o.thumb) pic.style.backgroundImage = 'url(' + o.thumb + ')';
-  else { const em = document.createElement('span'); em.className = 'emoji'; em.textContent = o.icon || '📼'; pic.appendChild(em); }
+  else { const em = document.createElement('span'); em.className = 'emoji'; em.textContent = (o.title || '?').trim().charAt(0).toUpperCase(); pic.appendChild(em); }
   if (o.tag) { const tg = document.createElement('div'); tg.className = 'tag'; tg.textContent = o.tag; pic.appendChild(tg); }
   const play = document.createElement('div'); play.className = 'play'; play.innerHTML = '<span>▶</span>';
   pic.appendChild(play);
@@ -872,12 +952,12 @@ function makeCard(o) {
   const t = document.createElement('div'); t.className = 'title'; t.textContent = o.title;
   const s = document.createElement('div'); s.className = 'src'; s.textContent = o.sub;
   const tags = document.createElement('div'); tags.className = 'tags'; tags.appendChild(s);
-  if (o.id) { const v = document.createElement('span'); v.className = 'src views'; v.dataset.id = o.id; v.textContent = '👁 –'; tags.appendChild(v); watchViews(v); }
+  if (o.id) { const v = document.createElement('span'); v.className = 'src views'; v.dataset.id = o.id; v.innerHTML = ico('eye') + '-'; tags.appendChild(v); watchViews(v); }
   if (editable() && o.id) { const bd = document.createElement('span'); bd.className = 'src bad'; bd.hidden = true; tags.appendChild(bd); badBadge(bd, o.id); }
   info.append(t, tags);
   card.append(pic, info);
   if (editable() && o.id) {
-    const ed = document.createElement('button'); ed.className = 'cbtn edit'; ed.textContent = '✎'; ed.title = 'Szerkesztés';
+    const ed = document.createElement('button'); ed.className = 'cbtn edit'; ed.innerHTML = ico('pencil'); ed.setAttribute('aria-label', 'Szerkesztés'); ed.title = 'Szerkesztés';
     ed.onclick = e => { e.stopPropagation(); openEdit(o.id); };
     const del = document.createElement('button'); del.className = 'cbtn del'; del.textContent = '×'; del.title = 'Törlés';
     del.onclick = e => { e.stopPropagation(); removeItem(o.id); };
@@ -908,11 +988,11 @@ function makeHero(e) {
   let title, sub, thumb, kicker, btn, action;
   if (e.kind === 'film') {
     const it = e.it; title = it.title; sub = it.label; thumb = it.thumb;
-    kicker = '🔥 Legújabb film'; btn = '▶ Lejátszás'; action = () => { location.hash = it.id; };
+    kicker = 'Legújabb film'; btn = 'Lejátszás'; action = () => { location.hash = it.id; };
   } else {
     const eps = episodesOf(e.name); title = eps[0].series; thumb = (eps.find(x => x.thumb) || {}).thumb;
-    sub = '📺 Sorozat · ' + seriesSub(eps);
-    kicker = '📺 Legújabb sorozat'; btn = '📺 Megnyitás'; action = () => { location.hash = 's/' + encodeURIComponent(e.name); };
+    sub = 'Sorozat · ' + seriesSub(eps);
+    kicker = 'Legújabb sorozat'; btn = 'Megnyitás'; action = () => { location.hash = 's/' + encodeURIComponent(e.name); };
   }
   const h = document.createElement('section'); h.className = 'hero';
   const bg = document.createElement('div'); bg.className = 'hero-bg' + (thumb ? '' : ' nothumb'); bg.setAttribute('role', 'img'); bg.setAttribute('aria-label', 'Kiemelt film háttérképe');
@@ -943,8 +1023,8 @@ function renderMain(box) {
   const catBar = $('#catBar'); catBar.innerHTML = '';
   if (cmap.size && !(cmap.size === 1 && cmap.has('__none'))) {
     const mk = (key, label) => { const b = document.createElement('button'); b.className = 'chip' + (catFilter === key ? ' active' : ''); b.textContent = label; b.onclick = () => { catFilter = key; render(); }; catBar.appendChild(b); };
-    mk('__all', '🌈 Minden kategória');
-    [...cmap.entries()].sort((a, b) => (a[0] === '__none') - (b[0] === '__none')).forEach(([k, v]) => mk(k, catEmoji(v.name) + ' ' + v.name + ' (' + v.n + ')'));
+    mk('__all', 'Minden kategória');
+    [...cmap.entries()].sort((a, b) => (a[0] === '__none') - (b[0] === '__none')).forEach(([k, v]) => mk(k, v.name + ' (' + v.n + ')'));
   }
   const q = $('#search').value.trim().toLowerCase();
   const shown = entries.filter(e => {
@@ -961,12 +1041,12 @@ function renderMain(box) {
   if (!items.length) {
     if (loadErr && !editable()) {
       const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-      grid.innerHTML = '<div class="empty"><b>🔌</b>Most nem sikerült betölteni a filmeket.<br>Próbáld újra egy kis idő múlva.<br><button class="btn" id="retryLoad" type="button" style="margin-top:14px">↻ Újrapróbálom</button><details style="margin-top:12px"><summary style="cursor:pointer;font-size:12px;color:var(--muted)">Részletek</summary><small>' + esc(loadErr) + '</small></details></div>';
+      grid.innerHTML = '<div class="empty">Most nem sikerült betölteni a filmeket.<br>Próbáld újra egy kis idő múlva.<br><button class="btn" id="retryLoad" type="button" style="margin-top:14px">↻ Újrapróbálom</button><details style="margin-top:12px"><summary style="cursor:pointer;font-size:12px;color:var(--muted)">Részletek</summary><small>' + esc(loadErr) + '</small></details></div>';
       const rb = $('#retryLoad'); if (rb) rb.onclick = () => { rb.disabled = true; rb.textContent = 'Betöltés…'; loadItems().then(() => { render(); onHash(); }).catch(() => { rb.disabled = false; rb.textContent = '↻ Újrapróbálom'; }); };
-    } else grid.innerHTML = '<div class="empty"><b>📼</b>Még üres, mint egy kihalt drive-in mozi.<br>Nyomd meg a „＋ Új film" gombot fent!</div>';
+    } else grid.innerHTML = '<div class="empty">Még üres, mint egy kihalt drive-in mozi.<br>Nyomd meg a „＋ Új film" gombot fent!</div>';
     return;
   }
-  if (!shown.length) { grid.innerHTML = '<div class="empty"><b>🕵️</b>Nincs találat. A film elbújt a VHS-tár mélyén.</div>'; return; }
+  if (!shown.length) { grid.innerHTML = '<div class="empty">Nincs találat. A film elbújt a VHS-tár mélyén.</div>'; return; }
   const entryCard = (e, idx) => {
     if (e.kind === 'film') {
       const it = e.it;
@@ -975,7 +1055,7 @@ function renderMain(box) {
     const eps = episodesOf(e.name);
     const th = (eps.find(x => x.thumb) || {}).thumb;
     return makeCard({
-      i: idx, thumb: th, icon: '📺', tag: '📺 SOROZAT', title: eps[0].series, sub: seriesSub(eps) + (e.cat ? ' · ' + e.cat : ''),
+      i: idx, thumb: th, icon: '', tag: 'SOROZAT', title: eps[0].series, sub: seriesSub(eps) + (e.cat ? ' · ' + e.cat : ''),
       onClick: () => { location.hash = 's/' + encodeURIComponent(e.name); }
     });
   };
@@ -992,7 +1072,7 @@ function renderMain(box) {
       const sec = document.createElement('section'); sec.className = 'catrow';
       const head = document.createElement('div'); head.className = 'rowhead';
       const h3 = document.createElement('h3');
-      h3.append(catEmoji(g.name) + ' ' + g.name);
+      h3.append(g.name);
       const small = document.createElement('small'); small.textContent = '(' + g.list.length + ')'; h3.appendChild(small);
       const more = document.createElement('span'); more.className = 'more'; more.textContent = 'Összes ›'; h3.appendChild(more);
       h3.onclick = () => { catFilter = g.key; render(); };
@@ -1013,9 +1093,9 @@ function renderMain(box) {
 
 function renderSeries(box) {
   const eps = episodesOf(currentSeries);
-  $('#seriesTitle').textContent = '📺 ' + (eps[0] ? eps[0].series : currentSeries);
+  $('#seriesTitle').textContent = (eps[0] ? eps[0].series : currentSeries);
   $('#seriesDel').style.display = editable() && eps.length ? '' : 'none';
-  if (!eps.length) { const g = document.createElement('div'); g.className = 'grid'; g.innerHTML = '<div class="empty"><b>🕳️</b>Ebben a sorozatban nincs rész.</div>'; box.appendChild(g); return; }
+  if (!eps.length) { const g = document.createElement('div'); g.className = 'grid'; g.innerHTML = '<div class="empty">Ebben a sorozatban nincs rész.</div>'; box.appendChild(g); return; }
   const bySeason = new Map();
   eps.forEach(e => { const s = e.season || 1; if (!bySeason.has(s)) bySeason.set(s, []); bySeason.get(s).push(e); });
   bySeason.forEach((list, s) => {
@@ -1066,8 +1146,8 @@ function openPlayer(id) {
   $('#nowLink').href = it.url; $('#nowLink').removeAttribute('hidden');
   $('#nowViews').textContent = '';
   hitView(id).then(v => {
-    if (playing === id) $('#nowViews').textContent = '👁 ' + fmtViews(v) + ' megtekintés';
-    document.querySelectorAll('.views[data-id="' + id + '"]').forEach(e => { e.textContent = '👁 ' + fmtViews(v); });
+    if (playing === id) $('#nowViews').innerHTML = ico('eye') + fmtViews(v) + ' megtekintés';
+    document.querySelectorAll('.views[data-id="' + id + '"]').forEach(e => { e.innerHTML = ico('eye') + fmtViews(v); });
   }).catch(() => {});
   setupBadBtn(id);
   $('#hint').style.display = it.type === 'iframe' ? 'block' : 'none';
@@ -1122,10 +1202,10 @@ function renderAllTitles() {
 }
 const _render = render;
 render = function () { _render.apply(this, arguments); renderAllTitles(); };
-const BASE_TITLE = 'mitnezzekma – Online filmek ingyen';
+const BASE_TITLE = 'mitnezzekma | Online filmek ingyen';
 function syncMeta() {
   const it = playing ? items.find(i => i.id === playing) : null;
-  document.title = it ? it.title + ' – mitnezzekma' : (currentSeries ? currentSeries + ' – mitnezzekma' : BASE_TITLE);
+  document.title = it ? it.title + ' | mitnezzekma' : (currentSeries ? currentSeries + ' | mitnezzekma' : BASE_TITLE);
 }
 function onHash() {
   const h = location.hash.slice(1);
@@ -1158,13 +1238,13 @@ $('#search').addEventListener('input', render);
 // ---- véletlen film / sorozatrész ----
 let lastRandom = null;
 function randomPlay() {
-  if (!items.length) { toast('Még nincs egy film sem 📼'); return; }
+  if (!items.length) { toast('Még nincs egy film sem'); return; }
   let pool = items.filter(i => i.id !== playing && i.id !== lastRandom);
   if (!pool.length) pool = items.filter(i => i.id !== playing);
   if (!pool.length) pool = items;
   const it = pool[Math.floor(Math.random() * pool.length)];
   lastRandom = it.id;
-  toast('🎲 ' + it.title);
+  toast(it.title);
   location.hash = it.id;
 }
 ['#randBtn', '#randBtn2'].forEach(s => {
@@ -1179,7 +1259,7 @@ document.addEventListener('keydown', e => {
 
 // ---- hozzáadás panel ----
 function openAddPanel() {
-  if (!editable()) { toast('Szerkesztéshez add meg a tokent (⚙)'); openCfg(); return; }
+  if (!editable()) { toast('Szerkesztéshez add meg a tokent a beállításokban'); openCfg(); return; }
   $('#drawer').classList.add('open'); setTimeout(() => $('#url').focus(), 150);
 }
 function closeAdd() { $('#drawer').classList.remove('open'); }
@@ -1243,7 +1323,7 @@ function badFetch(id) {
 }
 function badBadge(el, id) {
   if (!editable()) return;
-  badFetch(id).then(n => { if (n > 0) { el.textContent = '⚠ ' + n + ' jelzés'; el.hidden = false; } });
+  badFetch(id).then(n => { if (n > 0) { el.innerHTML = ico('warn') + n + ' jelzés'; el.hidden = false; } });
 }
 // szerkesztő módban lenyitható lista a jelzett filmekkel
 async function refreshBadPanel() {
@@ -1255,16 +1335,16 @@ async function refreshBadPanel() {
   const bad = rows.filter(x => x.n > 0).sort((a, b) => b.n - a.n);
   cnt.textContent = '(' + bad.length + ')';
   list.innerHTML = '';
-  if (!bad.length) { list.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:6px 0">Még nem jelzett senki hibás filmet. 🎉</div>'; return; }
+  if (!bad.length) { list.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:6px 0">Még nem jelzett senki hibás filmet.</div>'; return; }
   bad.forEach(({ it, n }) => {
     const row = document.createElement('div'); row.className = 'badrow';
     const nm = document.createElement('div'); nm.className = 'nm';
-    nm.textContent = (it.series && !(it.title || '').startsWith(it.series) ? it.series + ' – ' : '') + (it.title || it.url);
+    nm.textContent = (it.series && !(it.title || '').startsWith(it.series) ? it.series + ': ' : '') + (it.title || it.url);
     const sm = document.createElement('small'); sm.textContent = it.url || ''; nm.appendChild(sm);
-    const num = document.createElement('span'); num.className = 'n'; num.textContent = '⚠ ' + n;
+    const num = document.createElement('span'); num.className = 'n'; num.innerHTML = ico('warn') + n;
     const open = document.createElement('button'); open.className = 'btn ghost'; open.type = 'button'; open.textContent = '▶ Megnyitás';
     open.onclick = () => { location.hash = it.id; };
-    const ed = document.createElement('button'); ed.className = 'btn ghost'; ed.type = 'button'; ed.textContent = '✎ Szerkesztés';
+    const ed = document.createElement('button'); ed.className = 'btn ghost'; ed.type = 'button'; ed.innerHTML = ico('pencil') + 'Szerkesztés';
     ed.onclick = () => openEdit(it.id);
     row.append(nm, num, open, ed); list.appendChild(row);
   });
@@ -1273,15 +1353,15 @@ $('#badPanel').addEventListener('toggle', () => { if ($('#badPanel').open) { Obj
 function setupBadBtn(id) {
   const b = $('#badBtn'); if (!b) return;
   const key = badKey(id), done = badSent().includes(key);
-  b.classList.toggle('sent', done); b.textContent = done ? '✔ Jelezve' : '⚠ Film nem jó';
+  b.classList.toggle('sent', done); b.innerHTML = done ? ico('check') + 'Jelezve' : ico('warn') + 'Film nem jó';
   b.onclick = async () => {
     if (badSent().includes(key)) return;
-    b.classList.add('sent'); b.textContent = '✔ Jelezve';
+    b.classList.add('sent'); b.innerHTML = ico('check') + 'Jelezve';
     try { const l = badSent(); l.push(key); localStorage.setItem('zs-bad', JSON.stringify(l.slice(-300))); } catch (e) {}
-    try { await badReq('hit', id); toast('Köszi, jeleztük, hogy a film nem jó 🙏'); }
-    catch (e) { b.classList.remove('sent'); b.textContent = '⚠ Film nem jó'; try { localStorage.setItem('zs-bad', JSON.stringify(badSent().filter(k => k !== key))); } catch (x) {} toast('Nem sikerült elküldeni, próbáld újra'); }
+    try { await badReq('hit', id); toast('Köszi, jeleztük, hogy a film nem jó'); }
+    catch (e) { b.classList.remove('sent'); b.innerHTML = ico('warn') + 'Film nem jó'; try { localStorage.setItem('zs-bad', JSON.stringify(badSent().filter(k => k !== key))); } catch (x) {} toast('Nem sikerült elküldeni, próbáld újra'); }
   };
-  if (editable()) badReq('get', id).then(n => { if (n > 0 && playing === id) b.textContent = (done ? '✔ Jelezve' : '⚠ Film nem jó') + ' (' + n + ')'; }).catch(() => {});
+  if (editable()) badReq('get', id).then(n => { if (n > 0 && playing === id) b.innerHTML = (done ? ico('check') + 'Jelezve' : ico('warn') + 'Film nem jó') + ' (' + n + ')'; }).catch(() => {});
 }
 
 // ---- különböző eszközök száma (név és IP nélkül, csak egy számláló) ----
@@ -1303,9 +1383,21 @@ function trackDevice() {
 $('#visBtn').onclick = async () => {
   $('#visDlg').showModal(); $('#visNum').textContent = '…'; $('#visInfo').textContent = '';
   try { $('#visNum').textContent = fmtViews(await devReq('get')); }
-  catch (e) { $('#visNum').textContent = '–'; $('#visInfo').textContent = 'Nem sikerült lekérni: ' + e.message; }
+  catch (e) { $('#visNum').textContent = '-'; $('#visInfo').textContent = 'Nem sikerült lekérni: ' + e.message; }
 };
 $('#visClose').onclick = () => $('#visDlg').close();
+
+// ---- világos / sötét mód ----
+function setTheme(t, save) {
+  document.documentElement.setAttribute('data-theme', t);
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', t === 'light' ? '#f6f0ff' : '#0b0612');
+  const b = $('#themeBtn'); if (b) { b.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false'); b.title = t === 'light' ? 'Váltás sötét módra' : 'Váltás világos módra'; }
+  if (save) { try { localStorage.setItem('zs-theme', t); } catch (e) {} }
+}
+setTheme(document.documentElement.getAttribute('data-theme') || 'dark', false);
+$('#themeBtn').onclick = () => setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light', true);
+// ha a felhasználó nem választott, a rendszer beállításának változását követjük
+try { matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => { let saved = null; try { saved = localStorage.getItem('zs-theme'); } catch (x) {} if (!saved) setTheme(e.matches ? 'light' : 'dark', false); }); } catch (e) {}
 
 // ---- indulás ----
 
@@ -1317,7 +1409,7 @@ async function init() {
       const old = JSON.parse(localStorage.getItem(LEGACY_KEY) || '[]');
       if (old.length) {
         await mutate(arr => { const have = new Set(arr.map(i => i.url)); return arr.concat(old.filter(o => o.url && !have.has(o.url))); }, 'Régi lista átvétele');
-        localStorage.removeItem(LEGACY_KEY); toast('Régi lista átvéve ✔');
+        localStorage.removeItem(LEGACY_KEY); toast('Régi lista átvéve');
       }
     } catch (e) {}
   }
@@ -1350,7 +1442,7 @@ init();
 </script>
 <script>
 // reklám-bannerek (Adsterra 468x60): mindegyik külön keretben fut, így több is lehet egy oldalon.
-// Főoldalon 2–4 db kerül a kategória-sorok közé, film- és sorozatoldalon 1 db a tartalom alá.
+// Főoldalon 2-4 db kerül a kategória-sorok közé, film- és sorozatoldalon 1 db a tartalom alá.
 (function () {
   var KEY = '448163fe12e844f41cf2d452cacf64c7', pool = [];
   var ov = document.getElementById('overlay'), sb = document.getElementById('seriesBar'), content = document.getElementById('content');
@@ -1393,7 +1485,7 @@ init();
   sync();
 })();
 </script>
-<div id="abNote" role="note">KÉRLEK KAPCSOLD KI AZ ADBLOCKERT, HOGY TÁMOGASD AZ OLDAL FENNMARADÁSÁT<button id="abClose" aria-label="Bezár">✕</button></div>
+<div id="abNote" role="note">KÉRLEK KAPCSOLD KI AZ ADBLOCKERT, HOGY TÁMOGASD AZ OLDAL FENNMARADÁSÁT<button id="abClose" aria-label="Bezár"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
 <script>
 // adblock-észlelés: egy "csali" elem eltűnése, illetve a reklámszerver blokkolása alapján
 (function () {
