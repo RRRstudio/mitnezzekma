@@ -2,6 +2,14 @@
 <html lang="hu">
 <head>
 <meta charset="utf-8">
+<script>
+(function(){try{var h=document.documentElement,u=navigator.userAgent||'',q=location.search;
+var tv=/SMART-?TV|SmartTV|Tizen|Web0S|WebOS|NetCast|HbbTV|VIDAA|Hisense|BRAVIA|Roku|AppleTV|CrKey|AFT[A-Z]|GoogleTV|Android TV|Philips|Viera|OPR\/.*TV|Large Screen/i.test(u);
+if(/[?&]tv=1/.test(q))tv=true;if(/[?&]tv=0/.test(q))tv=false;
+var low=(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2);
+if(tv||low){h.classList.add('lite');window.ZS_LITE=true}
+if(tv){h.classList.add('tv');window.ZS_TV=true}}catch(e){}})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b0612">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -276,7 +284,7 @@
   :root{--display:'Bangers','Impact','Arial Black',system-ui,sans-serif}
   /* pásztázó vonalak és film-szemcsézettség (a lejátszó nézet fölé nem kerül) */
   body::before{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.13) 0 1px,transparent 1px 3px)}
-  body::after{content:"";position:fixed;inset:-60%;z-index:2;pointer-events:none;opacity:.07;will-change:transform;animation:grain 1.1s steps(6) infinite;
+  body::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.07;
     background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-7%,5%)}40%{transform:translate(6%,-8%)}60%{transform:translate(-4%,-3%)}80%{transform:translate(8%,6%)}100%{transform:translate(0,0)}}
   @keyframes blink{to{visibility:hidden}}
@@ -468,6 +476,26 @@
   .sitefoot{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;padding:22px 16px 34px;font-size:13px;color:var(--muted);position:relative;z-index:3}
   .sitefoot a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
   .sitefoot a:hover{color:var(--text)}
+
+  /* ===== könnyített mód (TV, kevés memória) ===== */
+  html.lite *,html.lite *::before,html.lite *::after{animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+    box-shadow:none!important;text-shadow:none!important;scroll-behavior:auto!important;filter:none!important}
+  html.lite body::before,html.lite body::after,html.lite .ambient,html.lite header::after{display:none!important}
+  html.lite header{background:#0b0612}
+  html.lite[data-theme="light"] header{background:#f7f3fd}
+  html.lite .card,html.lite .hero{background-color:#1a0d2b}
+  html.lite[data-theme="light"] .card{background-color:#fff}
+  /* TV: távirányító (nyilak + OK), nagyobb célpontok, képernyőszél-biztos tér */
+  html.tv .about,html.tv #abNote,html.tv .adbanner,html.tv .adslot,html.tv .arrows,html.tv #randBtn2{display:none!important}
+  html.tv header{padding:16px 4vw}
+  html.tv main{padding:24px 4vw 60px}
+  html.tv .grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+  html.tv .rail .card{flex-basis:clamp(280px,20vw,360px)}
+  html.tv .btn,html.tv .chip,html.tv .themebtn{min-height:48px;font-size:18px}
+  html.tv .card .title{font-size:19px}
+  html.tv :focus{outline:5px solid var(--accent);outline-offset:3px}
+  html.tv .card:focus{outline:5px solid var(--accent);outline-offset:-5px;border-color:var(--accent);transform:scale(1.04);z-index:5}
+  html.tv .cbtn,html.tv .sitefoot{display:none}
 </style>
 </head>
 <body>
@@ -541,7 +569,7 @@
   <div id="content"></div>
   <!-- reklám (Adsterra) -->
   <div class="adslot" style="display:flex;justify-content:center;margin:34px 0 10px;min-height:10px;position:relative;z-index:3;overflow:hidden">
-    <script async="async" data-cfasync="false" src="https://bancadeltempoidea.org/21/8c6d89939ec360819afa70a7d13d4ff4"></script>
+    <script>if(!window.ZS_TV){var s=document.createElement('script');s.async=true;s.setAttribute('data-cfasync','false');s.src='https://bancadeltempoidea.org/21/8c6d89939ec360819afa70a7d13d4ff4';document.currentScript.parentNode.insertBefore(s,document.currentScript)}</script>
     <div id="container-8c6d89939ec360819afa70a7d13d4ff4"></div>
   </div>
   <section class="about" id="about" aria-labelledby="aboutTitle">
@@ -939,11 +967,21 @@ let filter = 'all';
 let catFilter = '__all';
 let currentSeries = null;
 
+let picObs = null;
+function lazyPic(el) {
+  if (!picObs) picObs = new IntersectionObserver(es => es.forEach(en => {
+    if (en.isIntersecting) { picObs.unobserve(en.target); en.target.style.backgroundImage = 'url(' + en.target.dataset.bg + ')'; }
+  }), { rootMargin: '300px' });
+  picObs.observe(el);
+}
 function makeCard(o) {
   const card = document.createElement('div'); card.className = 'card';
   card.style.setProperty('--i', Math.min(o.i || 0, 14));
   const pic = document.createElement('div'); pic.className = 'pic' + (o.thumb ? '' : ' nothumb'); pic.setAttribute('role', 'img'); pic.setAttribute('aria-label', (o.title || 'Film') + ', borítókép');
-  if (o.thumb) pic.style.backgroundImage = 'url(' + o.thumb + ')';
+  if (o.thumb) {
+    if (window.ZS_LITE && 'IntersectionObserver' in window) { pic.dataset.bg = o.thumb; lazyPic(pic); }
+    else pic.style.backgroundImage = 'url(' + o.thumb + ')';
+  }
   else { const em = document.createElement('span'); em.className = 'emoji'; em.textContent = (o.title || '?').trim().charAt(0).toUpperCase(); pic.appendChild(em); }
   if (o.tag) { const tg = document.createElement('div'); tg.className = 'tag'; tg.textContent = o.tag; pic.appendChild(tg); }
   const play = document.createElement('div'); play.className = 'play'; play.innerHTML = '<span>▶</span>';
@@ -964,6 +1002,8 @@ function makeCard(o) {
     card.append(ed, del);
   }
   card.onclick = o.onClick;
+  card.tabIndex = 0; card.setAttribute('role', 'button');
+  card.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target === card) { e.preventDefault(); card.click(); } });
   return card;
 }
 
@@ -1425,6 +1465,7 @@ init();
 <!-- reklám (Adsterra/felugró): nem tölt be a kereső, a fejléc és az ablakok kattintásainál, és eszközönként legfeljebb percenként egyszer -->
 <script>
 (function () {
+  if (window.ZS_TV) return;
   var SRC = 'https://aarems.org/1/eec35253d864ddd60faf244cc7bdd7dc', KEY = 'zs-pop', GAP = 1 * 60 * 1000, loaded = false;
   // a fejléc (kereső, gombok), a beállító ablakok és a hozzáadó panel kattintásait nem látja a reklámszkript
   ['header', 'dialog', '#drawer'].forEach(function (sel) {
@@ -1489,6 +1530,7 @@ init();
 <script>
 // adblock-észlelés: egy "csali" elem eltűnése, illetve a reklámszerver blokkolása alapján
 (function () {
+  if (window.ZS_TV) return;
   var note = document.getElementById('abNote');
   try { if (sessionStorage.getItem('zs-ab-closed')) return; } catch (e) {}
   document.getElementById('abClose').onclick = function () { note.classList.remove('on'); try { sessionStorage.setItem('zs-ab-closed', '1'); } catch (e) {} };
@@ -1505,7 +1547,51 @@ init();
   try { fetch('https://bancadeltempoidea.org/21/8c6d89939ec360819afa70a7d13d4ff4', { mode: 'no-cors', cache: 'no-store' }).catch(show); } catch (e) {}
 })();
 </script>
+<script>
+// TV-s távirányító: nyilak mozgatják a fókuszt, OK megnyit, Vissza lép
+(function () {
+  if (!window.ZS_TV) return;
+  var SEL = '.card,button:not([disabled]),a[href],input,select,summary,.chip';
+  function root() {
+    var d = document.querySelector('dialog[open]'); if (d) return d;
+    var dr = document.getElementById('drawer'); if (dr && dr.classList.contains('open')) return dr;
+    var ov = document.getElementById('overlay'); if (ov && ov.classList.contains('open')) return ov;
+    return document;
+  }
+  function visible(el) {
+    var r = el.getBoundingClientRect();
+    if (!r.width || !r.height || r.bottom < 0 || r.top > innerHeight * 3) return false;
+    var cs = getComputedStyle(el); return cs.visibility !== 'hidden' && cs.display !== 'none';
+  }
+  function move(dir) {
+    var cur = document.activeElement, list = Array.prototype.filter.call(root().querySelectorAll(SEL), visible);
+    if (!cur || cur === document.body || list.indexOf(cur) < 0) { var f = list.filter(function (e) { return e.classList.contains('card'); })[0] || list[0]; if (f) f.focus(); return; }
+    var a = cur.getBoundingClientRect(), ax = a.left + a.width / 2, ay = a.top + a.height / 2, best = null, bs = 1e12;
+    list.forEach(function (el) {
+      if (el === cur || cur.contains(el) || el.contains(cur)) return;
+      var r = el.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2, dx = x - ax, dy = y - ay, main, side;
+      if (dir === 'right') { main = dx; side = Math.abs(dy); } else if (dir === 'left') { main = -dx; side = Math.abs(dy); }
+      else if (dir === 'down') { main = dy; side = Math.abs(dx); } else { main = -dy; side = Math.abs(dx); }
+      if (main <= 4) return;
+      var sc = main + side * 2.5; if (sc < bs) { bs = sc; best = el; }
+    });
+    if (best) { best.focus({ preventScroll: true }); best.scrollIntoView({ block: 'center', inline: 'center' }); }
+  }
+  document.addEventListener('keydown', function (e) {
+    var tag = document.activeElement && document.activeElement.tagName, k = e.keyCode;
+    if (k === 10009 || k === 461 || k === 27 || e.key === 'BrowserBack' || (k === 8 && !/^(INPUT|TEXTAREA)$/.test(tag))) {
+      if (k !== 27) { e.preventDefault(); document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); }
+      return;
+    }
+    var dir = { 37: 'left', 38: 'up', 39: 'right', 40: 'down' }[k];
+    if (!dir) return;
+    if (tag === 'INPUT' && (dir === 'left' || dir === 'right')) return;
+    e.preventDefault(); move(dir);
+  }, true);
+  window.addEventListener('load', function () { setTimeout(function () { move('down'); }, 600); });
+})();
+</script>
 <!-- reklám (Adsterra Social Bar) -->
-<script data-cfasync="false" src="https://bancadeltempoidea.org/14/2a9f1ae2cc016c1426311b7cb66f1f3b"></script>
+<script>if(!window.ZS_TV){var s=document.createElement('script');s.setAttribute('data-cfasync','false');s.src='https://bancadeltempoidea.org/14/2a9f1ae2cc016c1426311b7cb66f1f3b';document.body.appendChild(s)}</script>
 </body>
 </html>
